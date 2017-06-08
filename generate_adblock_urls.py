@@ -36,18 +36,23 @@ HOSTS_FILENAME = "adblock_list_domains.txt"
 HOSTS_ONLINE = True
 HOSTS_URL = "https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/adblock_list_domains.txt"
 TARGET_FILE = "generated_hosts.txt"
-DATABASE_AGE = 3
+DATABASE_AGE = 7
+USE_CACHE = True
+CACHE_AGE = 5
 
+# function to check how old is that file.
 def check_age(file, max_age):
 	now = time.time()
-	created = os.path.getctime(file)
+	if os.path.isfile(file):
+		created = os.path.getctime(file)
+	else:
+		created = 0
 	old_age = now - 60*60*24*max_age
 	
 	# guess that file is always newer than max_age, and return False.
 	state = False
 	
 	# now, do a check if file is really newer than max_age, and change state according to that.
-	print(created, old_age)
 	if created < old_age:
 		state = True
 		
@@ -121,14 +126,15 @@ if source_file_exists and len(content) > 0:
 	for url in content:
 		try:
 			c_perc = c/url_count
-			update_progress("Downloading hosts data", c_perc)
+			update_progress("Downloading data from %s" % url[1], c_perc)
 			
-			downloaded_file = urllib.URLopener()
-			downloaded_file.retrieve(str(url[0]), str(url[1]))
+			if check_age(str(url[1]), CACHE_AGE):
+				downloaded_file = urllib.URLopener()
+				downloaded_file.retrieve(str(url[0]), str(url[1]))
 			
 			c+=1
-		except:
-			print("Failed to fetch data from %s" % url[1])
+		except Exception as e:
+			print("Failed to fetch data from %s: %s" % (url[1], repr(e)))
 	
 	# start merging source files and removing them after
 	d = 0
@@ -172,7 +178,8 @@ if source_file_exists and len(content) > 0:
 							j+=1
 							
 					# remove tmp file
-					os.remove(str(c_url[1]))
+					if not USE_CACHE:
+						os.remove(str(c_url[1]))
 				
 				except Exception, err:
 					print("Failed reading data from %s: %s" % (str(c_url[0]), repr(err)))
