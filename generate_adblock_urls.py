@@ -37,6 +37,22 @@ HOSTS_ONLINE = True
 HOSTS_URL = "https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/adblock_list_domains.txt"
 TARGET_FILE = "generated_hosts.txt"
 DATABASE_AGE = 3
+
+def check_age(file, max_age):
+	now = time.time()
+	created = os.path.getctime(file)
+	old_age = now - 60*60*24*max_age
+	
+	# guess that file is always newer than max_age, and return False.
+	state = False
+	
+	# now, do a check if file is really newer than max_age, and change state according to that.
+	print(created, old_age)
+	if created < old_age:
+		state = True
+		
+	return state
+
 # grab domain list file if online
 if HOSTS_ONLINE:
 	to_download = False
@@ -46,11 +62,7 @@ if HOSTS_ONLINE:
 	else:
 		print("* Found old host database, checking age...")
 		
-		created = os.path.getctime(HOSTS_FILENAME)
-		now = time.time()
-		old_age = now - 60*60*24*DATABASE_AGE
-		
-		if created < old_age:
+		if check_age(HOSTS_FILENAME, DATABASE_AGE):
 			print("-> Host database too old, removing")
 			os.remove(HOSTS_FILENAME)
 			to_download = True
