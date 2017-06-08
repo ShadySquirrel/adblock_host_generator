@@ -33,24 +33,34 @@ def update_progress(action, progress):
 	
 # first, configuration.
 HOSTS_FILENAME = "adblock_list_domains.txt"
-HOSTS_LOCAL = True
 HOSTS_ONLINE = True
 HOSTS_URL = "https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/adblock_list_domains.txt"
 TARGET_FILE = "generated_hosts.txt"
-
+DATABASE_AGE = 3
 # grab domain list file if online
-if not HOSTS_LOCAL:
-	print("* Downloading hosts database from %s" % HOSTS_URL)
-	hosts_file = urllib.URLopener()
-	hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
-elif HOSTS_ONLINE:
+if HOSTS_ONLINE:
+	to_download = False
 	if not os.path.isfile(HOSTS_FILENAME):
 		print("* Hosts database not found, downloading from %s" % HOSTS_URL)
+		to_download = True
 	else:
-		print("* Found old host database, removing and redownloading from %s" % HOSTS_URL)
-	
-	hosts_file = urllib.URLopener()
-	hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
+		print("* Found old host database, checking age...")
+		
+		created = os.path.getctime(HOSTS_FILENAME)
+		now = time.time()
+		old_age = now - 60*60*24*DATABASE_AGE
+		
+		if created < old_age:
+			print("-> Host database too old, removing")
+			os.remove(HOSTS_FILENAME)
+			to_download = True
+		else:
+			print("-> Host database is less than %d days old, reusing." % DATABASE_AGE)
+		
+	if to_download:
+		print("* Downloading host database from %s" % HOSTS_URL)
+		hosts_file = urllib.URLopener()
+		hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
 else:
 	if not os.path.isfile(HOSTS_FILENAME):
 		print("* Hosts database not found, bailing out.")
