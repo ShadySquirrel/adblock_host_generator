@@ -39,6 +39,7 @@ TARGET_FILE = "generated_hosts.txt"
 DATABASE_AGE = 7
 USE_CACHE = True
 CACHE_AGE = 5
+CACHE_PATH = "cache"
 
 # function to check how old is that file.
 def check_age(file, max_age):
@@ -98,6 +99,7 @@ try:
 		for z in f_cont:
 			if not z.startswith("#"):
 				zz = z.rstrip("\n").split(",")
+				zz[1] = zz[1].strip()
 				content.append(zz)
 			
 			f_perc = round(f/f_size, 2)
@@ -123,14 +125,21 @@ if source_file_exists and len(content) > 0:
 	
 	print("There are %d lists in %s" % (url_count, HOSTS_FILENAME))
 	
+	# check if cache path exists.
+	if not os.path.isdir(CACHE_PATH):
+		print("* Couldn't find cache directory, creating.")
+		os.mkdir(CACHE_PATH)
+		
 	for url in content:
 		try:
 			c_perc = c/url_count
 			update_progress("Downloading data from %s" % url[1], c_perc)
 			
-			if check_age(str(url[1]), CACHE_AGE):
+			path = "%s/%s" % (CACHE_PATH, url[1])
+			
+			if check_age(path, CACHE_AGE):
 				downloaded_file = urllib.URLopener()
-				downloaded_file.retrieve(str(url[0]), str(url[1]))
+				downloaded_file.retrieve(str(url[0]), path)
 			
 			c+=1
 		except Exception as e:
@@ -145,7 +154,8 @@ if source_file_exists and len(content) > 0:
 			while d < c:
 				try:
 					c_url = content[d]
-					with open(c_url[1]) as source:
+					path = "%s/%s" % (CACHE_PATH, c_url[1])
+					with open(path) as source:
 						input = source.readlines()
 						s_size = len(input)
 						j = 1.0
@@ -179,7 +189,7 @@ if source_file_exists and len(content) > 0:
 							
 					# remove tmp file
 					if not USE_CACHE:
-						os.remove(str(c_url[1]))
+						os.remove(path)
 				
 				except Exception, err:
 					print("Failed reading data from %s: %s" % (str(c_url[0]), repr(err)))
