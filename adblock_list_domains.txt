@@ -1,0 +1,16 @@
+# add entry in host, Description format, new line after new line, just like in example.
+# DO NOT ADD ANYTHING ELSE
+# LINES STARTING WITH # ARE CONSIDERED COMMENTS AND WON'T BE PROCESSED!
+http://winhelp2002.mvps.org/hosts.txt, MVPS hosts
+http://hosts-file.net/.%5Cad_servers.txt, Ad servers
+http://someonewhocares.org/hosts/hosts, Someonewhocares.org host list
+https://easylist-downloads.adblockplus.org/fanboy-social.txt, Fanboy's anti-social
+https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt, Fanboy's annoyance
+https://s3.amazonaws.com/lists.disconnect.me/simple_malware.txt, Anti malware
+http://malwaredomains.lehigh.edu/files/immortal_domains.txt, Anti malware (long term)
+http://www.malwaredomainlist.com/hostslist/hosts.txt, Malware domain list
+https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt, Disconnect's simple malvertising
+https://easylist-downloads.adblockplus.org/easyprivacy.txt, Easy privacy by ABP
+https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt, Disconnect's anti-tracking
+https://easylist-downloads.adblockplus.org/easylist.txt, Easy list by ABP
+http://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&startdate%5Bday%5D=&startdate%5Bmonth%5D=&startdate%5Byear%5D=&mimetype=plaintext, pgl.yoyo.org
