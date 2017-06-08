@@ -59,6 +59,22 @@ def check_age(file, max_age):
 		
 	return state
 
+def generate_banner():
+	import datetime
+	
+	time_now = datetime.datetime.now()
+	
+	banner_string = "###########################################################################\n"
+	banner_string += "# Generated on %s\n" % time_now
+	banner_string += "# Contains hosts from:\n"
+
+	for url in content:
+		banner_string += "# %s (%s) \n" % (url[1], url[0])
+	
+	banner_string += "###########################################################################\n"
+	
+	return banner_string
+	
 # grab domain list file if online
 if HOSTS_ONLINE:
 	to_download = False
@@ -151,6 +167,8 @@ if source_file_exists and len(content) > 0:
 	try:
 		i = 0
 		with open(TARGET_FILE, "w") as target:
+			banner = generate_banner()
+			target.writelines(banner)
 			while d < c:
 				try:
 					c_url = content[d]
