@@ -9,6 +9,8 @@ import time
 ## A value at 1 or bigger represents 100%
 #
 # Function taken from https://stackoverflow.com/a/15860757, slightly modified to fit my needs
+# modifications include support for description text (instead of "Percent" used in original)
+# and little bit fixed formating (description is fixed-width, making things nicer)
 
 def update_progress(action, progress):
     barLength = 50 # Modify this to change the length of the progress bar
@@ -32,19 +34,32 @@ def update_progress(action, progress):
 # first, configuration.
 HOSTS_FILENAME = "adblock_list_domains.txt"
 HOSTS_LOCAL = True
-HOSTS_ONLINE = False
-HOSTS_URL = "url-to-your-file"
+HOSTS_ONLINE = True
+HOSTS_URL = "https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/adblock_list_domains.txt"
 TARGET_FILE = "generated_hosts.txt"
 
 # grab domain list file if online
 if not HOSTS_LOCAL:
-	print("* Downloading hosts filename from %s" % HOSTS_URL)
+	print("* Downloading hosts database from %s" % HOSTS_URL)
 	hosts_file = urllib.URLopener()
 	hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
+elif HOSTS_ONLINE:
+	if not os.path.isfile(HOSTS_FILENAME):
+		print("* Hosts database not found, downloading from %s" % HOSTS_URL)
+	else:
+		print("* Found old host database, removing and redownloading from %s" % HOSTS_URL)
+	
+	hosts_file = urllib.URLopener()
+	hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
+else:
+	if not os.path.isfile(HOSTS_FILENAME):
+		print("* Hosts database not found, bailing out.")
+		sys.exit(0)
+	else:
+		print("* Hosts database found, resuming operation...")
 
 # read the source file. Bail out if file isn't there
 source_file_exists = False
-
 content = []
 try:
 	with open(HOSTS_FILENAME) as f:
@@ -137,13 +152,13 @@ if source_file_exists and len(content) > 0:
 					# remove tmp file
 					os.remove(str(c_url[1]))
 				
-				except:
-					print("Failed reading data from %s: %s" % (str(c_url[0]), sys.exc_info[0]))
+				except Exception, err:
+					print("Failed reading data from %s: %s" % (str(c_url[0]), repr(err)))
 				
 				d+=1
 		
 		print("Written %d hosts to %s" % (i, TARGET_FILE))
 		target.close()
-	except:
-		print("Failed to write hosts file!")
+	except Exception, e:
+		print("Failed to write hosts file: %s" % repr(e))
 			
