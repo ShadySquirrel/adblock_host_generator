@@ -45,7 +45,7 @@ CACHE_PATH = "cache"
 def check_age(file, max_age):
 	now = time.time()
 	if os.path.isfile(file):
-		created = os.path.getctime(file)
+		created = os.path.getmtime(file)
 	else:
 		created = 0
 	old_age = now - 60*60*24*max_age
