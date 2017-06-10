@@ -38,7 +38,7 @@ HOSTS_URL = "https://raw.githubusercontent.com/ShadySquirrel/adblock_host_genera
 TARGET_FILE = "generated_hosts.txt"
 DATABASE_AGE = 7
 USE_CACHE = True
-CACHE_AGE = 5
+CACHE_AGE = 1
 CACHE_PATH = "cache"
 
 # function to check how old is that file.
@@ -122,7 +122,7 @@ try:
 			update_progress("Generating host list", f_perc)
 			
 			f+=1
-			
+		
 		source_file_exists = True
 except:
 	print("Error reading %s: %s" % (HOSTS_FILENAME, sys.exc_info()[0]))
@@ -160,6 +160,8 @@ if source_file_exists and len(content) > 0:
 			c+=1
 		except Exception as e:
 			print("Failed to fetch data from %s: %s" % (url[1], repr(e)))
+	
+	update_progress("Finished downloading data", 1)
 	
 	# start merging source files and removing them after
 	d = 0
