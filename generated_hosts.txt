@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-06-25 17:59:16.553000
+# Generated on 2017-06-30 15:21:48.097559
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -62336,6 +62336,8 @@
 127.0.0.1 apple.com-scan-virus-detected.com
 127.0.0.1 apple.com-store.me
 127.0.0.1 apple.com-supportcenter.website
+127.0.0.1 apple.com-webbrowsing-security.bid
+127.0.0.1 apple.com-webbrowsing-security.download
 127.0.0.1 apple.com.virus-mac.com
 127.0.0.1 applestore.com-mobile.gift
 127.0.0.1 armsart.com
@@ -70275,6 +70277,7 @@
 127.0.0.1 vid.atm.youku.com
 127.0.0.1 video-game-rewards-central.com
 127.0.0.1 video.cynogage.com
+127.0.0.1 video.entertaintastic.com
 127.0.0.1 videobox.com
 127.0.0.1 videocop.com
 127.0.0.1 videoegg.adbureau.net
@@ -79186,7 +79189,6 @@
 127.0.0.1 igagh.tourstogo.us
 127.0.0.1 igoby.frost-electric-supply.com
 127.0.0.1 igroo.barginginfrance.net
-127.0.0.1 image-circul.tk
 127.0.0.1 images.topguncustomz.com
 127.0.0.1 img001.com
 127.0.0.1 immediateresponseforcomputer.com
@@ -79217,8 +79219,6 @@
 127.0.0.1 jeansvixens.com
 127.0.0.1 jessisjewels.com
 127.0.0.1 jktdc.in
-127.0.0.1 job-companybuild.tk
-127.0.0.1 job-compuse.tk
 127.0.0.1 josip-stadler.org
 127.0.0.1 js.tongji.linezing.com
 127.0.0.1 jstaikos.com
@@ -79245,7 +79245,6 @@
 127.0.0.1 krsa2gno.youre-todays-lucky-sweeps-winner.com
 127.0.0.1 kulro.csheaven.com
 127.0.0.1 kyrsu.frost-electric-supply.com
-127.0.0.1 lab-cntest.tk
 127.0.0.1 landisbaptist.com
 127.0.0.1 lay.elticket.com.ar
 127.0.0.1 lcbcad.co.uk
@@ -79336,7 +79335,6 @@
 127.0.0.1 neumashop.cl
 127.0.0.1 nevergreen.net
 127.0.0.1 new-address.tk
-127.0.0.1 new-softdriver.tk
 127.0.0.1 news4cars.com
 127.0.0.1 njtgsd.attackthethrone.com
 127.0.0.1 nkgamers.com
@@ -85510,6 +85508,7 @@
 127.0.0.1 adecn.com
 127.0.0.1 ademails.com
 127.0.0.1 adengage.com
+127.0.0.1 adexchangeprediction.com
 127.0.0.1 adexpose.com
 127.0.0.1 adext.inkclub.com
 127.0.0.1 adf.ly
@@ -85817,7 +85816,6 @@
 127.0.0.1 ads.multimania.lycos.fr
 127.0.0.1 ads.nationalgeographic.com
 127.0.0.1 ads.ncm.com
-127.0.0.1 ads.netclusive.de
 127.0.0.1 ads.netmechanic.com
 127.0.0.1 ads.networksolutions.com
 127.0.0.1 ads.newdream.net
@@ -86431,6 +86429,7 @@
 127.0.0.1 class-act-clicks.com
 127.0.0.1 click.absoluteagency.com
 127.0.0.1 click.fool.com
+127.0.0.1 click.kmindex.ru
 127.0.0.1 click2freemoney.com
 127.0.0.1 click2paid.com
 127.0.0.1 clickability.com
@@ -86511,6 +86510,7 @@
 127.0.0.1 counter.sparklit.com
 127.0.0.1 counter.yadro.ru
 127.0.0.1 counters.honesty.com
+127.0.0.1 counting.kmindex.ru
 127.0.0.1 counts.tucows.com
 127.0.0.1 coupling-media.de
 127.0.0.1 cpalead.com
@@ -86619,7 +86619,6 @@
 127.0.0.1 eu1.madsone.com
 127.0.0.1 eur.a1.yimg.com
 127.0.0.1 eurekster.com
-127.0.0.1 euro-linkindex.de
 127.0.0.1 euroclick.com
 127.0.0.1 euros4click.de
 127.0.0.1 eusta.de
@@ -86720,7 +86719,6 @@
 127.0.0.1 grafstat.ro
 127.0.0.1 grapeshot.co.uk
 127.0.0.1 greystripe.com
-127.0.0.1 gtop.ro
 127.0.0.1 gtop100.com
 127.0.0.1 gunggo.com
 127.0.0.1 harrenmedia.com
@@ -87137,7 +87135,6 @@
 127.0.0.1 prchecker.info
 127.0.0.1 precisioncounter.com
 127.0.0.1 predictad.com
-127.0.0.1 premium-offers.com
 127.0.0.1 primaryads.com
 127.0.0.1 primetime.net
 127.0.0.1 privatecash.com
@@ -87211,7 +87208,6 @@
 127.0.0.1 realtechnetwork.com
 127.0.0.1 realtracker.com
 127.0.0.1 reduxmedia.com
-127.0.0.1 reduxmediagroup.com
 127.0.0.1 reedbusiness.com.invalid
 127.0.0.1 referralware.com
 127.0.0.1 regnow.com
@@ -87351,7 +87347,6 @@
 127.0.0.1 stats.mirrorfootball.co.uk
 127.0.0.1 stats.multiup.org
 127.0.0.1 stats.olark.com
-127.0.0.1 stats.suite101.com
 127.0.0.1 stats.townnews.com
 127.0.0.1 stats.unwired-i.net
 127.0.0.1 stats.wordpress.com
@@ -87467,6 +87462,7 @@
 127.0.0.1 traffic-exchange.com
 127.0.0.1 traffic.liveuniversenetwork.com
 127.0.0.1 trafficadept.com
+127.0.0.1 trafficbalancerouting.com
 127.0.0.1 trafficcdn.liveuniversenetwork.com
 127.0.0.1 trafficfactory.biz
 127.0.0.1 trafficholder.com
@@ -87573,6 +87569,7 @@
 127.0.0.1 whenu.com
 127.0.0.1 whispa.com
 127.0.0.1 whoisonline.net
+127.0.0.1 wholesaletraffic.info
 127.0.0.1 widespace.com
 127.0.0.1 widgetbucks.com
 127.0.0.1 wikia-ads.wikia.com
