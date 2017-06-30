@@ -1,3 +1,5 @@
+#!/usr/bin/python2
+
 import urllib
 import os
 import sys
