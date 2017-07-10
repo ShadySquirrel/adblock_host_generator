@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-07-10 12:26:43.091201
+# Generated on 2017-07-10 12:38:30.483536
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -13342,7 +13342,6 @@
 127.0.0.1 ad.hornymatches.com
 127.0.0.1 ad.hpg.com.br
 127.0.0.1 ad.hpg.ig.com.br
-127.0.0.1 ad.html.it
 127.0.0.1 ad.hu.doubleclick.net
 127.0.0.1 ad.hyena.cz
 127.0.0.1 ad.i30t.com
@@ -16060,7 +16059,6 @@
 127.0.0.1 ads.pervsonpatrol.com
 127.0.0.1 ads.phishhook.com
 127.0.0.1 ads.photosight.ru
-127.0.0.1 ads.phpclasses.org
 127.0.0.1 ads.pictela.net
 127.0.0.1 ads.piramit.net
 127.0.0.1 ads.pirateden.com
@@ -22920,7 +22918,6 @@
 127.0.0.1 counter.hitbox.com
 127.0.0.1 counter.hitslink.com
 127.0.0.1 counter.hitslinks.com
-127.0.0.1 counter.htmlvalidator.com
 127.0.0.1 counter.hyipexplorer.com
 127.0.0.1 counter.inetusa.com
 127.0.0.1 counter.kmindex.ru
@@ -24506,7 +24503,6 @@
 127.0.0.1 engine.partygaming.doublepimp.com
 127.0.0.1 engine.pgmediaserve.com
 127.0.0.1 engine.phn.doublepimp.com
-127.0.0.1 engine.phptrader.com
 127.0.0.1 engine.pianomedia.sk
 127.0.0.1 engine.rk.doublepimp.com
 127.0.0.1 engine.smartbn.ru
@@ -27226,7 +27222,6 @@
 127.0.0.1 ingdirectit.tt.omtrdc.net
 127.0.0.1 inimage.tr553.com
 127.0.0.1 init.lingospot.com
-127.0.0.1 init.phpwind.net
 127.0.0.1 init.startappexchange.com
 127.0.0.1 initgroup.com
 127.0.0.1 inkshare.com
@@ -32999,7 +32994,6 @@
 127.0.0.1 static.groupon.co.uk
 127.0.0.1 static.hoptopboy.com
 127.0.0.1 static.hotjar.com
-127.0.0.1 static.htmlhubing.xyz
 127.0.0.1 static.hubspot.com
 127.0.0.1 static.hupso.com
 127.0.0.1 static.icmwebserv.com
@@ -33959,7 +33953,6 @@
 127.0.0.1 tizerclik.com
 127.0.0.1 tizermy.net
 127.0.0.1 tizru.com
-127.0.0.1 tj.phpwind.net
 127.0.0.1 tjs.maxiget.com
 127.0.0.1 tk3.sbc60.com
 127.0.0.1 tll.tl
@@ -40494,8 +40487,6 @@
 127.0.0.1 www.hostpost4.xyz
 127.0.0.1 www.hotjar.com
 127.0.0.1 www.hotlog.ru
-127.0.0.1 www.html5zombo.com
-127.0.0.1 www.htmlcounter.com
 127.0.0.1 www.hubtraffic.com
 127.0.0.1 www.humanclick.com
 127.0.0.1 www.hurricanedigitalmedia.com
@@ -40966,7 +40957,6 @@
 127.0.0.1 www.pflexads.com
 127.0.0.1 www.pheedo.com
 127.0.0.1 www.phenomcrm.com
-127.0.0.1 www.phpbbex.com
 127.0.0.1 www.picket0.com
 127.0.0.1 www.picreel.com
 127.0.0.1 www.pinktrkn.com
@@ -43762,7 +43752,6 @@
 127.0.0.1 dtsrd.gov.cn
 127.0.0.1 seqsixxx.com
 127.0.0.1 huagumei.com
-127.0.0.1 www.phpoutsourcingindia.com
 127.0.0.1 xsso.anbtr.com
 127.0.0.1 yuxiwine.com
 127.0.0.1 homely.gutterheaters4u.com
@@ -47000,7 +46989,6 @@
 127.0.0.1 vingrad.ru
 127.0.0.1 wanderlusting.net
 127.0.0.1 whereisdudescars.com
-127.0.0.1 winupdate.phpnet.us
 127.0.0.1 youngarea.ru
 127.0.0.1 zuiddorpe.net
 127.0.0.1 gall.dcinside.com
@@ -48756,7 +48744,6 @@
 127.0.0.1 dtsrd.gov.cn
 127.0.0.1 seqsixxx.com
 127.0.0.1 huagumei.com
-127.0.0.1 www.phpoutsourcingindia.com
 127.0.0.1 xsso.anbtr.com
 127.0.0.1 yuxiwine.com
 127.0.0.1 homely.gutterheaters4u.com
@@ -49735,7 +49722,6 @@
 127.0.0.1 ads.passion.com
 127.0.0.1 ads.pennet.com
 127.0.0.1 ads.pheedo.com
-127.0.0.1 ads.phpclasses.org
 127.0.0.1 ads.pkr.com
 127.0.0.1 ads.planet.nl
 127.0.0.1 ads.pni.com
@@ -49895,7 +49881,6 @@
 127.0.0.1 adserver.friendfinder.com
 127.0.0.1 adserver.hardsextube.com
 127.0.0.1 adserver.hardwareanalysis.com
-127.0.0.1 adserver.html.it
 127.0.0.1 adserver.irishwebmasterforum.com
 127.0.0.1 adserver.janes.com
 127.0.0.1 adserver.libero.it
