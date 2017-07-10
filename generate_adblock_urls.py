@@ -44,6 +44,7 @@ CACHE_AGE = 1
 CACHE_PATH = "cache"
 ignore_tuple = ("#", ".", "-", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", ":", ";", "=", " ", "\r", "\n")
 ignore_host_tuple = ("#", "-", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
+ignore_extensions_touple = (".jpg", ".png", ".html", ".htm", ".php", ".gif")
 
 # function to check how old is that file.
 def check_age(file, max_age):
@@ -193,10 +194,15 @@ if source_file_exists and len(content) > 0:
 							if len(y) > 0:
 								if not y.startswith(ignore_tuple):
 									write = True
+									# check for symbols
 									for sym in ignore_host_tuple:
 										if sym in y:
 											write = False
 									
+									# check for file extensions
+									if y.endswith(ignore_extensions_touple):
+										write = False
+
 									if write:
 										w = y.split()
 										
