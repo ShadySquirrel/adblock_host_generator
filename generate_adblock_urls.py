@@ -42,6 +42,8 @@ DATABASE_AGE = 7
 USE_CACHE = True
 CACHE_AGE = 1
 CACHE_PATH = "cache"
+ignore_tuple = ("#", ".", "-", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", ":", ";", "=", " ", "\r", "\n")
+ignore_host_tuple = ("#", "-", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
 
 # function to check how old is that file.
 def check_age(file, max_age):
@@ -189,8 +191,13 @@ if source_file_exists and len(content) > 0:
 							y = y.strip()
 							y = y.strip("\n")
 							if len(y) > 0:
-								if not y.startswith(("#", ".", "-", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", ":", ";", "=", " ", "\r", "\n")):
-									if "#" not in y:
+								if not y.startswith(ignore_tuple):
+									write = True
+									for sym in ignore_host_tuple:
+										if sym in y:
+											write = False
+									
+									if write:
 										w = y.split()
 										
 										nline = None
