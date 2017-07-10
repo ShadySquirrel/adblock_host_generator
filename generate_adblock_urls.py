@@ -43,7 +43,7 @@ USE_CACHE = True
 CACHE_AGE = 1
 CACHE_PATH = "cache"
 ignore_tuple = ("#", ".", "-", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", ":", ";", "=", " ", "\r", "\n")
-ignore_host_tuple = ("#", "-", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
+ignore_host_tuple = ("#", "-", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ", "(", ")", "<", ">", ".jpg", ".png", ".html", ".htm", ".php", ".gif")
 
 # function to check how old is that file.
 def check_age(file, max_age):
