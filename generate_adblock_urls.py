@@ -70,6 +70,41 @@ def check_age(file, max_age):
 		
 	return state
 
+# parses sent string and returns value and state
+def parse_line(y):
+	# this defaults to true. runtime changes to false
+	write = True 
+	
+	try: # chances for errors are slim, but better safe than sorry.
+		# some lists have specific rules beggining with ||, filter them out. 
+		if y.startswith("||"):
+			# this should be done bit better?
+			y = y.strip("||") 
+			z1 = y.split("^") 
+			z = z1[0] 
+			y = z[0]  
+		
+		# specifics cleaned, now do standard checks. First, check if host entry is valid
+		if y.startswith(ignore_tuple): 
+			write = False
+		
+		# check if host is valid - if hosts contains any of symbols from list, ignore it. 
+		for sym in ignore_host_tuple: 
+			if sym in y: 
+				write = False  
+		
+		# check for file extensions. we're blocking domains, not specific files 
+		if y.endswith(ignore_extensions_touple): 
+			write = False
+	
+	except Exception, exc:
+		print "ERROR: parsing failed: %s" % str(exc)
+		write = False
+	
+	# all fine, return
+	return (write, y)
+	
+# generates banner placed on top of generated hosts file
 def generate_banner():
 	import datetime
 	
@@ -203,27 +238,7 @@ if source_file_exists and len(content) > 0:
 						y = w
 						
 						if len(y) > 0:
-							write = True
-
-							# some lists have specific rules beggining with ||, filter them out.
-							if y.startswith("||"):
-								y = y.strip("||")
-								z1 = y.split("^")
-								z = z1[0]
-								y = z[0]
-									
-							# not a specific rule, so do standard checks.
-							if y.startswith(ignore_tuple):
-								write = False
-							
-							# check if host is valid - if hosts contains any of symbols from list, ignore it.
-							for sym in ignore_host_tuple:
-								if sym in y:
-									write = False
-								
-							# check for file extensions. we're blocking domains, not specific files
-							if y.endswith(ignore_extensions_touple):
-								write = False
+							(write, y) = parse_line(y)
 							
 							if write:								
 								nline = None
