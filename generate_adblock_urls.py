@@ -11,6 +11,19 @@ import os
 import sys
 import time
 
+# first, configuration.
+HOSTS_FILENAME = "adblock_list_domains.txt"
+HOSTS_ONLINE = True
+HOSTS_URL = "https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/adblock_list_domains.txt"
+TARGET_FILE = "generated_hosts.txt"
+DATABASE_AGE = 7
+USE_CACHE = True
+CACHE_AGE = 1
+CACHE_PATH = "cache"
+ignore_tuple = ("#", "-","+", ".", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
+ignore_host_tuple = ("#", "-","+", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
+ignore_extensions_touple = (".jpg", ".png", ".html", ".htm", ".php", ".gif")
+
 # update_progress() : Displays or updates a console progress bar
 ## Accepts a float between 0 and 1. Any int will be converted to a float.
 ## A value under 0 represents a 'halt'.
@@ -38,19 +51,6 @@ def update_progress(action, progress):
     text = "\r{0:58} [{1}] {2}% {3}".format( action, "#"*block + "-"*(barLength-block), round(progress*100,2), status)
     sys.stdout.write(text)
     sys.stdout.flush()
-	
-# first, configuration.
-HOSTS_FILENAME = "adblock_list_domains.txt"
-HOSTS_ONLINE = True
-HOSTS_URL = "https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/adblock_list_domains.txt"
-TARGET_FILE = "generated_hosts.txt"
-DATABASE_AGE = 7
-USE_CACHE = True
-CACHE_AGE = 1
-CACHE_PATH = "cache"
-ignore_tuple = ("#", "-","+", ".", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
-ignore_host_tuple = ("#", "-","+", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
-ignore_extensions_touple = (".jpg", ".png", ".html", ".htm", ".php", ".gif")
 
 # function to check how old is that file.
 def check_age(file, max_age):
