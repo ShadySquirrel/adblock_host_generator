@@ -42,8 +42,8 @@ DATABASE_AGE = 7
 USE_CACHE = True
 CACHE_AGE = 1
 CACHE_PATH = "cache"
-ignore_tuple = ("#", ".", "-", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", ":", ";", "=", " ", "\r", "\n")
-ignore_host_tuple = ("#", "-", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
+ignore_tuple = ("#", "-","+", ".", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
+ignore_host_tuple = ("#", "-","+", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
 ignore_extensions_touple = (".jpg", ".png", ".html", ".htm", ".php", ".gif")
 
 # function to check how old is that file.
@@ -118,7 +118,7 @@ try:
 		f = 1.0
 
 		for z in f_cont:
-			if not z.startswith("#"):
+			if not z.startswith(ignore_tuple):
 				zz = z.rstrip("\n").split(",")
 				zz[1] = zz[1].strip()
 				content.append(zz)
@@ -170,69 +170,112 @@ if source_file_exists and len(content) > 0:
 	
 	# start merging source files and removing them after
 	d = 0
-	print("* Processing sources and writing to %s" % TARGET_FILE)
-	try:
-		i = 0
-		with open(TARGET_FILE, "w") as target:
-			banner = generate_banner()
-			target.writelines(banner)
-			while d < c:
+	print("* Processing sources...")
+	
+	# variable 'i' represents number of written hosts
+	i = 0
+	hosts = []
+	while d < url_count:
+		try:
+			c_url = content[d]
+			path = "%s/%s" % (CACHE_PATH, c_url[1])
+			hosts.append("# From %s\n" % c_url[1])
+			
+			with open(path) as source:
+				input_line = source.readlines()
+				s_size = len(input_line)
+				j = 1.0
+				# sanitize input
 				try:
-					c_url = content[d]
-					path = "%s/%s" % (CACHE_PATH, c_url[1])
-					with open(path) as source:
-						input = source.readlines()
-						s_size = len(input)
-						j = 1.0
-						# sanitize input
-						for y in input:
-							s_perc = j/s_size
-							update_progress("Processing %s" % c_url[1].strip(), s_perc)
-							
-							y = y.strip()
-							y = y.strip("\n")
-							if len(y) > 0:
-								if not y.startswith(ignore_tuple):
-									write = True
-									# check for symbols
-									for sym in ignore_host_tuple:
-										if sym in y:
-											write = False
-									
-									# check for file extensions
-									if y.endswith(ignore_extensions_touple):
-										write = False
+					for y in input_line:
+						s_perc = j/s_size
+						update_progress("Processing %s" % c_url[1].strip(), s_perc)
+						
+						w = y.strip()
+						w = w.strip("\n")
+						w = w.strip("\r")						
+						y = w
+						
+						if len(y) > 0:
+							write = True
 
-									if write:
-										w = y.split()
-										
-										nline = None
-										
-										if len(w) > 1:
-											nline = "127.0.0.1 %s\n" % w[1]
-										elif len(w) == 1:
-											nline = "127.0.0.1 %s\n" % w[0]
-										else:
-											nline = None
-											
-										# write only if nline is initialised
-										if nline != None:
-											target.writelines(nline)
-											i+=1
-								
-							j+=1
+							# some lists have specific rules beggining with ||, filter them out.
+							if y.startswith("||"):
+								y = y.strip("||")
+								z1 = y.split("^")
+								z = z1[0]
+								y = z[0]
+									
+							# not a specific rule, so do standard checks.
+							if y.startswith(ignore_tuple):
+								write = False
 							
-					# remove tmp file
-					if not USE_CACHE:
-						os.remove(path)
-				
-				except Exception, err:
-					print("Failed reading data from %s: %s" % (str(c_url[0]), repr(err)))
-				
-				d+=1
+							# check if host is valid - if hosts contains any of symbols from list, ignore it.
+							for sym in ignore_host_tuple:
+								if sym in y:
+									write = False
+								
+							# check for file extensions. we're blocking domains, not specific files
+							if y.endswith(ignore_extensions_touple):
+								write = False
+							
+							if write:								
+								nline = None
+								
+								w = y.split()
+								
+								if len(w) > 1:
+									nline = "127.0.0.1 %s\n" % w[1]
+								elif len(w) == 1:
+									nline = "127.0.0.1 %s\n" % w[0]
+										
+								# write only if nline is initialised
+								if nline != None:
+									hosts.append(nline)
+						j+=1
+
+				except Exception, drnd:
+					print("Failed  processing entry %s: %s" % (str(y), repr(drnd)))
+							
+				# remove tmp file
+				if not USE_CACHE:
+					os.remove(path)
+			
+		except Exception, err:
+			print("Failed reading data from %s: %s" % (str(c_url[1]), repr(err)))	
+
+		d+=1
 		
-		print("Written %d hosts to %s" % (i, TARGET_FILE))
-		target.close()
+	# now, let's write!
+	try:
+		# total hosts
+		to_write = set(hosts)
+		total_hosts = len(to_write)
+			
+		# count 'em
+		cnt = 1.0
+		
+		if total_hosts > 0:
+			with open(TARGET_FILE, "w") as target:
+				# generates banner at the top of file. Contains info about hosts and creation date.
+				banner = generate_banner()
+				target.writelines(banner)
+
+				# now write files
+				
+				for h in to_write:
+					target.write(h)
+					s_perc = cnt/total_hosts
+					# inform
+					update_progress("Writing hosts %d of %d" % (cnt, total_hosts), s_perc)
+					# ++
+					cnt+=1
+					
+				print("Written %d hosts to %s" % (cnt, TARGET_FILE))
+				
+				target.close()
+		else:
+			print("Nothing to write!")
+
 	except Exception, e:
 		print("Failed to write hosts file: %s" % repr(e))
-			
