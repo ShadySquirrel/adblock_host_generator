@@ -11,28 +11,49 @@ import os
 import sys
 import time
 
-# first, configuration.
+#################### CONFIGURATION BLOCK #################### 
+''' 
+Configuration values:
+
+- HOSTS_FILENAME: file with host providers URLs and descriptions
+- HOSTS_ONLINE: use online source for host providers file
+- HOSTS_URL: self-explainatory, but ok: address of host provides file
+- TARGET_FILE: name of file where hosts are written
+- DATABASE_AGE: how old can HOSTS_FILENAME file be before we redownload it. Useful only with HOSTS_ONLINE = True. Age is in days.
+- USE_CACHE: Self explainatory - cache downloaded host lists, and reuse them if they are under limited age. Age is in days
+- CACHE_PATH: where cache is stored
+'''
+# All about host source and target file
 HOSTS_FILENAME = "adblock_list_domains.txt"
 HOSTS_ONLINE = True
 HOSTS_URL = "https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/adblock_list_domains.txt"
 TARGET_FILE = "generated_hosts.txt"
+
+# database and cache
 DATABASE_AGE = 7
 USE_CACHE = True
 CACHE_AGE = 1
 CACHE_PATH = "cache"
+
+
+# ignored chars. add yours, freely.
 ignore_tuple = ("#", "-","+", ".", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
 ignore_host_tuple = ("#", "-","+", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
 ignore_extensions_touple = (".jpg", ".png", ".html", ".htm", ".php", ".gif")
+#################### CONFIGURATION BLOCK END #################### 
 
-# update_progress() : Displays or updates a console progress bar
-## Accepts a float between 0 and 1. Any int will be converted to a float.
-## A value under 0 represents a 'halt'.
-## A value at 1 or bigger represents 100%
-#
-# Function taken from https://stackoverflow.com/a/15860757, slightly modified to fit my needs
-# modifications include support for description text (instead of "Percent" used in original)
-# and little bit fixed formating (description is fixed-width, making things nicer)
+#################### HERE BE LIONS #################### 
+'''
+update_progress() : Displays or updates a console progress bar
+ 
+Accepts a float between 0 and 1. Any int will be converted to a float.
+- A value under 0 represents a 'halt'.
+- A value at 1 or bigger represents 100%
 
+Function taken from https://stackoverflow.com/a/15860757, slightly modified to fit my needs
+modifications include support for description text (instead of "Percent" used in original)
+and little bit fixed formating (description is fixed-width, making things nicer)
+'''
 def update_progress(action, progress):
     barLength = 50 # Modify this to change the length of the progress bar
     status = ""
@@ -123,25 +144,39 @@ def generate_banner():
 	
 # grab domain list file if online
 if HOSTS_ONLINE:
-	to_download = False
-	if not os.path.isfile(HOSTS_FILENAME):
-		print("* Hosts database not found, downloading from %s" % HOSTS_URL)
-		to_download = True
-	else:
-		print("* Found old host database, checking age...")
+	try:
+		# let's assume we don't have to download it
+		to_download = False
 		
-		if check_age(HOSTS_FILENAME, DATABASE_AGE):
-			print("-> Host database too old, removing")
-			os.remove(HOSTS_FILENAME)
+		# check for host database existence
+		if not os.path.isfile(HOSTS_FILENAME):
+			print("* Hosts database not found, downloading from %s" % HOSTS_URL)
 			to_download = True
 		else:
-			print("-> Host database is less than %d days old, reusing." % DATABASE_AGE)
+			print("* Found old host database, checking age...")
+			
+			# now, check for database age. 
+			# Possible scenario: I've changed something on Linux and uploaded,
+			#	but for some sick reason, I'm building file on windows...
+			if check_age(HOSTS_FILENAME, DATABASE_AGE):
+				print("-> Host database too old, removing")
+				os.remove(HOSTS_FILENAME)
+				to_download = True
+			else:
+				print("-> Host database is less than %d days old, reusing." % DATABASE_AGE)
 		
-	if to_download:
-		print("* Downloading host database from %s" % HOSTS_URL)
-		hosts_file = urllib.URLopener()
-		hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
+		# to_download flag is true, well, download now. Only reason why I've put try-except here
+		if to_download:
+			print("* Downloading host database from %s" % HOSTS_URL)
+			hosts_file = urllib.URLopener()
+			hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
+	
+	except Exception, err:
+		print("Host database download failed (%s), aborting" % str(err))
+		sys.exit(0)
 else:
+	# this is for good old analogue access - all files on drives, 
+	# and when something is missing? blame user.
 	if not os.path.isfile(HOSTS_FILENAME):
 		print("* Hosts database not found, bailing out.")
 		sys.exit(0)
@@ -149,6 +184,7 @@ else:
 		print("* Hosts database found, resuming operation...")
 
 # read the source file. Bail out if file isn't there
+# again try-except, because it can fail, miserably.
 source_file_exists = False
 content = []
 try:
@@ -176,7 +212,7 @@ except:
 
 # everything we do now, do only if source_file_exists is True:
 if source_file_exists and len(content) > 0:
-	# check if TARGET_FILE exists, and remove if there
+	# check if TARGET_FILE exists, and remove if it's there
 	if os.path.isfile(TARGET_FILE):
 		print("Old TARGET_FILE detected, removing...")
 		os.remove(TARGET_FILE)
@@ -185,13 +221,16 @@ if source_file_exists and len(content) > 0:
 	c = 1.0;
 	url_count = len(content)
 	
+	# inform user about everything
 	print("There are %d lists in %s" % (url_count, HOSTS_FILENAME))
 	
 	# check if cache path exists.
 	if not os.path.isdir(CACHE_PATH):
 		print("* Couldn't find cache directory, creating.")
 		os.mkdir(CACHE_PATH)
-		
+	
+	# download host sources. This should probably be moved to a function.
+	dl_succ = False
 	for url in content:
 		try:
 			c_perc = c/url_count
@@ -204,30 +243,45 @@ if source_file_exists and len(content) > 0:
 				downloaded_file.retrieve(str(url[0]), path)
 			
 			c+=1
+			dl_succ = True
 		except Exception as e:
 			print("Failed to fetch data from %s: %s" % (url[1], repr(e)))
+			# not sure if I should bail here or not?
 	
-	update_progress("Finished downloading data", 1)
+	# yeah, we're bailing out like there is no tomorrow.
+	if dl_succ:
+		update_progress("Finished downloading data", 1)
+	else:
+		print "Couldn't download host sources, bailing out"
+		sys.exit(0)
 	
 	# start merging source files and removing them after
 	d = 0
 	print("* Processing sources...")
 	
-	# variable 'i' represents number of written hosts
-	i = 0
+	# this, ladies and gentleman, is our main container for hosts
+	# damn python, I can't remember how's this thing called. Touple? Array? Fuck it.
 	hosts = []
+	
+	# Now, let's loop!
 	while d < url_count:
 		try:
+			# content[] actually contains host url and file name.
+			# file name is used to read data from cache.
+			# smart, eh?
 			c_url = content[d]
 			path = "%s/%s" % (CACHE_PATH, c_url[1])
-			hosts.append("# From %s\n" % c_url[1])
 			
+			# open host source file and read it, determine it's size, strip it and parse it
 			with open(path) as source:
 				input_line = source.readlines()
 				s_size = len(input_line)
+				
+				# this is for progress bar.
 				j = 1.0
-				# sanitize input
+
 				try:
+					# go line per line and parse.
 					for y in input_line:
 						s_perc = j/s_size
 						update_progress("Processing %s" % c_url[1].strip(), s_perc)
@@ -237,22 +291,27 @@ if source_file_exists and len(content) > 0:
 						w = w.strip("\r")						
 						y = w
 						
+						# line is useful to us only if it's longer than 0 chars
 						if len(y) > 0:
+							# parse, get response and value.
 							(write, y) = parse_line(y)
 							
+							# if response is right, write
 							if write:								
 								nline = None
 								
+								# we're dropping the IP part of host, if any.
 								w = y.split()
 								
 								if len(w) > 1:
-									nline = "127.0.0.1 %s\n" % w[1]
+									nline = "127.0.0.1 %s\n" % w[1] # see why?
 								elif len(w) == 1:
 									nline = "127.0.0.1 %s\n" % w[0]
 										
 								# write only if nline is initialised
 								if nline != None:
 									hosts.append(nline)
+						# and increment percentage, rinse-repeat.
 						j+=1
 
 				except Exception, drnd:
@@ -282,11 +341,13 @@ if source_file_exists and len(content) > 0:
 				banner = generate_banner()
 				target.writelines(banner)
 
-				# now write files
-				
+				# now write line by line. Can't be converted to oneliner :(
 				for h in to_write:
 					target.write(h)
+					
+					# calulate percentage
 					s_perc = cnt/total_hosts
+					
 					# inform
 					update_progress("Writing hosts %d of %d" % (cnt, total_hosts), s_perc)
 					# ++
@@ -300,3 +361,5 @@ if source_file_exists and len(content) > 0:
 
 	except Exception, e:
 		print("Failed to write hosts file: %s" % repr(e))
+
+#################### NO MORE LIONS :( #################### 
