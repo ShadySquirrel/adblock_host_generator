@@ -1,3 +1,3 @@
 # Additional trackers not found in generated file
-127.0.0.1 graph.facebook.com
-127.0.0.1 graph.instagram.com
+graph.facebook.com
+graph.instagram.com
