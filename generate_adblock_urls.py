@@ -1,5 +1,11 @@
 #!/usr/bin/python2
 
+#  generate_adblock_urls.py
+#  
+#  Copyright 2017 Shady Squirrel <shady.squirrel@caramail.com>
+#
+# Licenced under Apache License Version 2.0 
+
 import urllib
 import os
 import sys
