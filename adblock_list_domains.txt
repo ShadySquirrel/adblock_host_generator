@@ -14,3 +14,4 @@ https://easylist-downloads.adblockplus.org/easyprivacy.txt, Easy privacy by ABP
 https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt, Disconnect's anti-tracking
 https://easylist-downloads.adblockplus.org/easylist.txt, Easy list by ABP
 http://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&startdate%5Bday%5D=&startdate%5Bmonth%5D=&startdate%5Byear%5D=&mimetype=plaintext, Peter Lowe's list
+https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/3ba6fb02bec5acbe2808f0401291b6ca742a347e/custom_hosts.txt, Shady Squirrel's personal blocklist
