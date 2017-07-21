@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-07-20 14:30:32.781032
+# Generated on 2017-07-21 10:25:42.706452
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -247,7 +247,6 @@
 127.0.0.1 ad.doubleclick.net.74958.9336.302br.net
 127.0.0.1 altfarm.mediaplex.com.77796.9664.302br.net
 127.0.0.1 geotarget.info
-# From Easy privacy by ABP
 127.0.0.1 35.6.87.194.dynamic.dol.ru
 127.0.0.1 view.atdmt.com.46555.9304.302br.net
 127.0.0.1 fashiontrafficdemo.go2cloud.org
@@ -1473,7 +1472,6 @@
 127.0.0.1 ci23.actonsoftware.com
 127.0.0.1 frtye.com
 127.0.0.1 bank90.mi.ads.mp.mydas.mobi
-# From Personal blocklist
 127.0.0.1 ad.doubleclick.net.25696.9190.302br.net
 127.0.0.1 web20.voodoo.com
 127.0.0.1 ad.doubleclick.net.44519.9336.302br.net
@@ -3163,7 +3161,6 @@
 127.0.0.1 s.206ads.com
 127.0.0.1 bunte.de.intellitxt.com
 127.0.0.1 indicate.to
-# From Disconnect's malvertising list
 127.0.0.1 count506.51yes.com
 127.0.0.1 dasezhanwang.com
 127.0.0.1 ad.doubleclick.net.44305.9336.302br.net
@@ -3380,7 +3377,6 @@
 127.0.0.1 mvxiui.com
 127.0.0.1 count.prx.org
 127.0.0.1 ad.doubleclick.net.22572.9136.302br.net
-# From Disconnect's anti-tracking
 127.0.0.1 ad297m.adk2.co
 127.0.0.1 ad.doubleclick.net.68538.9499.302br.net
 127.0.0.1 ad.doubleclick.net.76626.9647.302br.net
@@ -3830,7 +3826,6 @@
 127.0.0.1 ad.it.chilinext.com
 127.0.0.1 view.atdmt.com.67822.9306.302br.net
 127.0.0.1 bidclix.net
-# From Fanboy's anti-social
 127.0.0.1 krj9b.redirectvoluum.com
 127.0.0.1 fhg.iknowthatgirl.com
 127.0.0.1 www.buttcandy.com
@@ -4330,7 +4325,6 @@
 127.0.0.1 ad.doubleclick.net.65674.9503.302br.net
 127.0.0.1 report.ivwbox.de
 127.0.0.1 return.uk.domainnamesales.com
-# From Dan Polock's host list
 127.0.0.1 ad.doubleclick.net.63781.9250.302br.net
 127.0.0.1 ad.doubleclick.net.67461.9336.302br.net
 127.0.0.1 ad.doubleclick.net.35634.9239.302br.net
@@ -5850,7 +5844,6 @@
 127.0.0.1 connectionads.com
 127.0.0.1 altfarm.mediaplex.com.77787.9664.302br.net
 127.0.0.1 ad.doubleclick.net.57235.9406.302br.net
-# From Malware domain list
 127.0.0.1 221.6.87.194.dynamic.dol.ru
 127.0.0.1 freecelebvideo.net
 127.0.0.1 banners188.hpg.com.br
@@ -13881,7 +13874,6 @@
 127.0.0.1 aolwpnscom.112.2o7.net
 127.0.0.1 pagecookie.org
 127.0.0.1 ad.doubleclick.net.69564.9569.302br.net
-# From Easy list by ABP
 127.0.0.1 ad.doubleclick.net.54852.9199.302br.net
 127.0.0.1 www.webattack.com
 127.0.0.1 ad.doubleclick.net.29403.9237.302br.net
@@ -16414,7 +16406,6 @@
 127.0.0.1 ad.doubleclick.net.70250.9584.302br.net
 127.0.0.1 ad.doubleclick.net.47938.9357.302br.net
 127.0.0.1 ardboers.ivwbox.de
-# From Immortal malware domains
 127.0.0.1 nbjmp.com
 127.0.0.1 view.atdmt.com.38145.9304.302br.net
 127.0.0.1 ad.doubleclick.net.43047.9296.302br.net
@@ -27908,7 +27899,6 @@
 127.0.0.1 ezlifeinc.org
 127.0.0.1 ads.billiton.de
 127.0.0.1 r9pyq.voluumtrk.com
-# From Fanboy's annoyance
 127.0.0.1 ad.doubleclick.net.58452.9318.302br.net
 127.0.0.1 services.webestools.com
 127.0.0.1 count382.51yes.com
@@ -30931,7 +30921,6 @@
 127.0.0.1 ads.websiteservices.com
 127.0.0.1 ticketdeedee.com
 127.0.0.1 delta210.rtb.appier.net
-# From Peter Lowe's list
 127.0.0.1 adx.gainesvillesun.com
 127.0.0.1 banner.everestpoker.com
 127.0.0.1 u070.67.spylog.com
@@ -35543,7 +35532,6 @@
 127.0.0.1 ad.doubleclick.net.21638.9075.302br.net
 127.0.0.1 track.netzero.net
 127.0.0.1 statdb.pressflex.com
-# From MVPS hosts
 127.0.0.1 tds47.bestdeals.at
 127.0.0.1 galttech.com
 127.0.0.1 m2.webstats.motigo.com
@@ -42220,7 +42208,6 @@
 127.0.0.1 ad.doubleclick.net.33825.9250.302br.net
 127.0.0.1 revlabs.go2cloud.org
 127.0.0.1 ad.doubleclick.net.80408.9677.302br.net
-# From Disconnect's malware list
 127.0.0.1 ad.doubleclick.net.41676.9317.302br.net
 127.0.0.1 tmgdigital.go2cloud.org
 127.0.0.1 cdn.valueclick.net
@@ -45508,7 +45495,6 @@
 127.0.0.1 braas.com.ua
 127.0.0.1 a52.suntimes.com
 127.0.0.1 ad.doubleclick.net.49720.9240.302br.net
-# From hpHosts
 127.0.0.1 api.magmamobile.com
 127.0.0.1 ad.doubleclick.net.69571.9569.302br.net
 127.0.0.1 ad.doubleclick.net.29575.9235.302br.net
