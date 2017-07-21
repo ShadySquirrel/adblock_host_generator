@@ -407,7 +407,7 @@ if source_file_exists and len(content) > 0:
 			else:
 				print("* No difference in sizes. Still rechecking.")
 		
-			# determine how many hosts is missing - this is a bit long operation,
+			# determine how many hosts are missing - this is a bit long operation,
 			# we're talking about 40+k lines, so move to function and show progress
 			# AND DO THIS NO MATTER HOW MUCH diff IS. 
 			# Simply because we can have it 0, and still get new updates
