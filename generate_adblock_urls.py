@@ -436,8 +436,8 @@ if source_file_exists and len(content) > 0:
 		cnt = 1.0
 		
 		if total_hosts > 0:
-			# remove old file before writing, and do it silently. No matter if we're appending or writing blank
-			if os.path.exists(TARGET_FILE):
+			# if ONLY_ADD_NEW flag is set, remove old file before writing, and do it silently.
+			if ONLY_ADD_NEW and os.path.exists(TARGET_FILE):
 				os.remove(TARGET_FILE)
 				
 			with open(TARGET_FILE, "w") as target:
