@@ -22,6 +22,7 @@ Configuration values:
 - DATABASE_AGE: how old can HOSTS_FILENAME file be before we redownload it. Useful only with HOSTS_ONLINE = True. Age is in days.
 - USE_CACHE: Self explainatory - cache downloaded host lists, and reuse them if they are under limited age. Age is in days
 - CACHE_PATH: where cache is stored
+- ONLY_ADD_NEW: this beauty tells this script to use data from old host file and add new entries, not to overwrite it.
 '''
 # All about host source and target file
 HOSTS_FILENAME = "adblock_list_domains.txt"
@@ -32,9 +33,11 @@ TARGET_FILE = "generated_hosts.txt"
 # database and cache
 DATABASE_AGE = 7
 USE_CACHE = True
-CACHE_AGE = 1
+CACHE_AGE = 0.5
 CACHE_PATH = "cache"
 
+# misc
+ONLY_ADD_NEW = True
 
 # ignored chars. add yours, freely.
 ignore_tuple = ("#", "-","+", ".", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
@@ -69,7 +72,7 @@ def update_progress(action, progress):
         progress = 1
         status = "\r\n"
     block = int(round(barLength*progress))
-    text = "\r{0:58} [{1}] {2}% {3}".format( action, "#"*block + "-"*(barLength-block), round(progress*100,2), status)
+    text = "\r{0:100} [{1}] {2}% {3}".format( action, "#"*block + "-"*(barLength-block), round(progress*100,2), status)
     sys.stdout.write(text)
     sys.stdout.flush()
 
@@ -124,7 +127,51 @@ def parse_line(y):
 	
 	# all fine, return
 	return (write, y)
+
+# reads old hosts file and returns a list of hosts
+def read_old_hosts():
+	old_hosts = []
+	lines = []
+	with open(TARGET_FILE, "r") as target:
+		lines = target.readlines()
+		target.close()
+		
+	for x in lines:
+		if not x.startswith("#"):
+			z = x.strip()
+			z1 = z.rstrip("\n")
+			z2 = z1.rstrip("\r")
+
+			old_hosts.append(z2)
 	
+	return old_hosts
+
+def find_new_hosts(old, new):
+	missing_hosts = []
+	# long loop, needs progress
+	i = 1.0
+	t = float(len(new))
+	
+	for host in new:
+		
+		prog = i/t
+		if not host.startswith("#"):		
+			# clean before testing
+			host = host.strip()
+			host = host.strip("\n")
+			host = host.strip("\r")
+					
+			if host not in old:
+				#print("* Missing %s. appending" % host)
+				missing_hosts.append(host)
+				
+		update_progress("Searching for new entries...", prog)
+		i+=1
+	
+	# finished. return
+	return missing_hosts
+				
+
 # generates banner placed on top of generated hosts file
 def generate_banner():
 	import datetime
@@ -150,35 +197,35 @@ if HOSTS_ONLINE:
 		
 		# check for host database existence
 		if not os.path.isfile(HOSTS_FILENAME):
-			print("* Hosts database not found, downloading from %s" % HOSTS_URL)
+			print("* Downloading host list base from %s" % HOSTS_URL)
 			to_download = True
 		else:
-			print("* Found old host database, checking age...")
+			print("* Checking age of host list base")
 			
 			# now, check for database age. 
 			# Possible scenario: I've changed something on Linux and uploaded,
 			#	but for some sick reason, I'm building file on windows...
 			if check_age(HOSTS_FILENAME, DATABASE_AGE):
-				print("-> Host database too old, removing")
+				print("-> Host list base is older than %d days, redownloading" % DATABASE_AGE)
 				os.remove(HOSTS_FILENAME)
 				to_download = True
 			else:
-				print("-> Host database is less than %d days old, reusing." % DATABASE_AGE)
+				print("-> Host list base is still fresh enough")
 		
 		# to_download flag is true, well, download now. Only reason why I've put try-except here
 		if to_download:
-			print("* Downloading host database from %s" % HOSTS_URL)
+			print("* Started host base download.")
 			hosts_file = urllib.URLopener()
 			hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
 	
 	except Exception, err:
-		print("Host database download failed (%s), aborting" % str(err))
+		print("!! Host database download failed (%s), aborting" % str(err))
 		sys.exit(0)
 else:
 	# this is for good old analogue access - all files on drives, 
 	# and when something is missing? blame user.
 	if not os.path.isfile(HOSTS_FILENAME):
-		print("* Hosts database not found, bailing out.")
+		print("!! Hosts database not found, bailing out.")
 		sys.exit(0)
 	else:
 		print("* Hosts database found, resuming operation...")
@@ -201,32 +248,38 @@ try:
 				content.append(zz)
 			
 			f_perc = round(f/f_size, 2)
-			update_progress("Generating host list", f_perc)
+			update_progress("Preparing host list base", f_perc)
 			
 			f+=1
 		
 		source_file_exists = True
 except:
-	print("Error reading %s: %s" % (HOSTS_FILENAME, sys.exc_info()[0]))
+	print("!! Error reading %s: %s" % (HOSTS_FILENAME, sys.exc_info()[0]))
 	raise
+
+# store old hosts here. leave it uninitialized because it maybe won't be even used
+old_hosts = []
 
 # everything we do now, do only if source_file_exists is True:
 if source_file_exists and len(content) > 0:
 	# check if TARGET_FILE exists, and remove if it's there
 	if os.path.isfile(TARGET_FILE):
-		print("Old TARGET_FILE detected, removing...")
-		os.remove(TARGET_FILE)
+		if not ONLY_ADD_NEW:
+			print("* Found old output, removing file.")
+			os.remove(TARGET_FILE)
+		else:
+			print("* Old output found, reusing since ONLY_ADD_NEW flag is set.")
 
 	# start reading  and downloading hosts
 	c = 1.0;
 	url_count = len(content)
 	
 	# inform user about everything
-	print("There are %d lists in %s" % (url_count, HOSTS_FILENAME))
+	print("* Found %d lists in database." % url_count)
 	
 	# check if cache path exists.
 	if not os.path.isdir(CACHE_PATH):
-		print("* Couldn't find cache directory, creating.")
+		print("*! Couldn't find cache directory, creating.")
 		os.mkdir(CACHE_PATH)
 	
 	# download host sources. This should probably be moved to a function.
@@ -245,14 +298,14 @@ if source_file_exists and len(content) > 0:
 			c+=1
 			dl_succ = True
 		except Exception as e:
-			print("Failed to fetch data from %s: %s" % (url[1], repr(e)))
+			print("!! Failed to fetch data from %s: %s" % (url[1], repr(e)))
 			# not sure if I should bail here or not?
 	
 	# yeah, we're bailing out like there is no tomorrow.
 	if dl_succ:
-		update_progress("Finished downloading data", 1)
+		print("* Finished downloading data")
 	else:
-		print "Couldn't download host sources, bailing out"
+		print "!! Couldn't download host sources, bailing out"
 		sys.exit(0)
 	
 	# start merging source files and removing them after
@@ -261,8 +314,9 @@ if source_file_exists and len(content) > 0:
 	
 	# this, ladies and gentleman, is our main container for hosts
 	# damn python, I can't remember how's this thing called. Touple? Array? Fuck it.
+	# we aren't initializing it with existing data in case ONLY_ADD_NEW is true simply because performance impact is, whoh, great.
 	hosts = []
-	
+
 	# Now, let's loop!
 	while d < url_count:
 		try:
@@ -284,8 +338,9 @@ if source_file_exists and len(content) > 0:
 					# go line per line and parse.
 					for y in input_line:
 						s_perc = j/s_size
-						update_progress("Processing %s" % c_url[1].strip(), s_perc)
+						update_progress("Parsing list: %s" % c_url[1].strip(), s_perc)
 						
+						# strip it naked before parsing.
 						w = y.strip()
 						w = w.strip("\n")
 						w = w.strip("\r")						
@@ -310,32 +365,81 @@ if source_file_exists and len(content) > 0:
 										
 								# write only if nline is initialised
 								if nline != None:
-									hosts.append(nline)
+										hosts.append(nline)
+
 						# and increment percentage, rinse-repeat.
 						j+=1
 
 				except Exception, drnd:
-					print("Failed  processing entry %s: %s" % (str(y), repr(drnd)))
+					print("!! Failed  processing entry %s: %s" % (str(y), repr(drnd)))
 							
 				# remove tmp file
 				if not USE_CACHE:
 					os.remove(path)
 			
 		except Exception, err:
-			print("Failed reading data from %s: %s" % (str(c_url[1]), repr(err)))	
+			print("!! Failed reading data from %s: %s" % (str(c_url[1]), repr(err)))	
 
 		d+=1
 		
 	# now, let's write!
 	try:
-		# total hosts
-		to_write = set(hosts)
-		total_hosts = len(to_write)
+		# initialise to_write as empty list
+		to_write = []
+		
+		# tmp will store our new host values until we decide what to do
+		# it also useset set(), because we need to drop duplicates. Sweet, eh?
+		tmp = set(hosts)
+		
+		# now, do a block for ONLY_ADD_NEW and only in case TARGET_FILE EXISTS!
+		if ONLY_ADD_NEW and os.path.exists(TARGET_FILE):
+			# total old hosts
+			old_hosts = read_old_hosts()		
+			old_hosts_count = len(old_hosts)
+			print("* Old host definitions: %d hosts" % old_hosts_count)
+		
+			new_host_count = len(tmp)
+			print("* New host definitions: %d hosts" % new_host_count)
+		
+			diff = abs(new_host_count - old_hosts_count)
+			if diff > 0:
+				print("* Difference is %d hosts" % diff)
+			else:
+				print("* No difference in sizes. Still rechecking.")
+		
+			# determine how many hosts is missing - this is a bit long operation,
+			# we're talking about 40+k lines, so move to function and show progress
+			# AND DO THIS NO MATTER HOW MUCH diff IS. 
+			# Simply because we can have it 0, and still get new updates
+			missing_hosts = find_new_hosts(old_hosts, tmp)			
 			
+			# count 'em and show info
+			missing_hosts_c = len(missing_hosts)
+					
+			# inform user and extend current host list
+			if missing_hosts_c > 0:
+				print("* Appending %d hosts to existing list" % missing_hosts_c)
+				old_hosts.extend(list(missing_hosts))
+					
+				to_write = list(old_hosts)
+			else:
+				print("* Nothing found, not updating file.")
+				
+		# because TARGET_FILE doesn't exist or ONLY_ADD_NEW isn't set, fail to default behaviour
+		else:
+			to_write = list(tmp)
+		
+		# finally, total number of hosts to write.
+		total_hosts = len(to_write)
+		
 		# count 'em
 		cnt = 1.0
 		
 		if total_hosts > 0:
+			# remove old file before writing, and do it silently. No matter if we're appending or writing blank
+			if os.path.exists(TARGET_FILE):
+				os.remove(TARGET_FILE)
+				
 			with open(TARGET_FILE, "w") as target:
 				# generates banner at the top of file. Contains info about hosts and creation date.
 				banner = generate_banner()
@@ -353,13 +457,13 @@ if source_file_exists and len(content) > 0:
 					# ++
 					cnt+=1
 					
-				print("Written %d hosts to %s" % (cnt, TARGET_FILE))
+				print("* Written %d hosts to %s" % (cnt, TARGET_FILE))
 				
 				target.close()
 		else:
-			print("Nothing to write!")
+			print("* No changes. You're up to date!")
 
 	except Exception, e:
-		print("Failed to write hosts file: %s" % repr(e))
+		print("!! Failed to write hosts file: %s" % repr(e))
 
 #################### NO MORE LIONS :( #################### 
