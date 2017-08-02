@@ -359,9 +359,9 @@ if source_file_exists and len(content) > 0:
 								w = y.split()
 								
 								if len(w) > 1:
-									nline = "127.0.0.1 %s\n" % w[1] # see why?
+									nline = "127.0.0.1 %s" % w[1] # see why?
 								elif len(w) == 1:
-									nline = "127.0.0.1 %s\n" % w[0]
+									nline = "127.0.0.1 %s" % w[0]
 										
 								# write only if nline is initialised
 								if nline != None:
@@ -444,10 +444,11 @@ if source_file_exists and len(content) > 0:
 				# generates banner at the top of file. Contains info about hosts and creation date.
 				banner = generate_banner()
 				target.writelines(banner)
-
+							
 				# now write line by line. Can't be converted to oneliner :(
 				for h in to_write:
-					target.write(h)
+					nl = "%s\n\r" % h
+					target.writelines(nl)
 					
 					# calulate percentage
 					s_perc = cnt/total_hosts
