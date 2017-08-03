@@ -105,8 +105,10 @@ def parse_line(y):
 			# this should be done bit better?
 			y = y.strip("||") 
 			z1 = y.split("^") 
-			z = z1[0] 
-			y = z[0]  
+			z = z1[0]
+			# now split on backslashes, and use only first part of it
+			w = z.split("/", 1)
+			y = w[0].strip()
 		
 		# specifics cleaned, now do standard checks. First, check if host entry is valid
 		if y.startswith(ignore_tuple): 
@@ -169,7 +171,7 @@ def find_new_hosts(old, new):
 		i+=1
 	
 	# finished. return
-	return missing_hosts
+	return list(set(missing_hosts))
 				
 
 # generates banner placed on top of generated hosts file
@@ -447,7 +449,7 @@ if source_file_exists and len(content) > 0:
 							
 				# now write line by line. Can't be converted to oneliner :(
 				for h in to_write:
-					nl = "%s\n\r" % h
+					nl = "%s\n" % h
 					target.writelines(nl)
 					
 					# calulate percentage
