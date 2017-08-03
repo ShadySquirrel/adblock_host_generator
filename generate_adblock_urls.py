@@ -23,6 +23,8 @@ Configuration values:
 - USE_CACHE: Self explainatory - cache downloaded host lists, and reuse them if they are under limited age. Age is in days
 - CACHE_PATH: where cache is stored
 - ONLY_ADD_NEW: this beauty tells this script to use data from old host file and add new entries, not to overwrite it.
+- USE_WHITELIST: allows us to whitelist some domains - for example, definitions from ABP lists contain a lot of wildstrings pointing to Google, Facebook and others, so after cleaning, we get whole domains blocked.
+- WHITELISTED_DOMAINS: contains whitelisted domains. Too lazy to move to external file
 '''
 # All about host source and target file
 HOSTS_FILENAME = "adblock_list_domains.txt"
@@ -43,6 +45,29 @@ ONLY_ADD_NEW = True
 ignore_tuple = ("#", "-","+", ".", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
 ignore_host_tuple = ("#", "-","+", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
 ignore_extensions_touple = (".jpg", ".png", ".html", ".htm", ".php", ".gif")
+
+# Whitelisted domains. Use [] list!
+WHITELISTED_DOMAINS = [
+	# google block. google code not shown because it's dropped.
+	"google.com", "plus.google.com", "drive.google.com", "video.google.com", "apis.google.com", "docs.google.com", "keep.google.com", "play.google.com", "youtube.com",
+	# facebook block. Possibly more to add but, who cares?
+	"facebook.com", 
+	# twitter block
+	"twitter.com", "platform.twitter.com", "api.twitter.com", "search.twitter.com",
+	# amazon block
+	"amazon.com",
+	# aliexpress, alibaba
+	"aliexpress.com", "alibaba.com",
+	# yahoo and yahoo companies
+	"search.yahoo.com", "music.yahoo.com", "yahoo.com", "mail.yahoo.com", "flickr.com",
+	# microsoft
+	"microsoft.com",
+	# tumblr
+	"tumblr.com", "assets.tumblr.com", "platform.tumblr.com", "static.tumblr.com", 
+	# imgur, reddit
+	"imgur.com", "reddit.com"
+	 ]
+
 #################### CONFIGURATION BLOCK END #################### 
 
 #################### HERE BE LIONS #################### 
@@ -121,6 +146,10 @@ def parse_line(y):
 		
 		# check for file extensions. we're blocking domains, not specific files 
 		if y.endswith(ignore_extensions_touple): 
+			write = False
+		
+		# check if host is in WHITELISTED_HOSTS:
+		if y in WHITELISTED_DOMAINS:
 			write = False
 	
 	except Exception, exc:
