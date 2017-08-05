@@ -10,6 +10,7 @@ import urllib
 import os
 import sys
 import time
+import sh
 
 #################### CONFIGURATION BLOCK #################### 
 ''' 
@@ -25,6 +26,7 @@ Configuration values:
 - ONLY_ADD_NEW: this beauty tells this script to use data from old host file and add new entries, not to overwrite it.
 - USE_WHITELIST: allows us to whitelist some domains - for example, definitions from ABP lists contain a lot of wildstrings pointing to Google, Facebook and others, so after cleaning, we get whole domains blocked.
 - WHITELISTED_DOMAINS: contains whitelisted domains. Too lazy to move to external file
+- AUTO_PUSH: automatically pushes TARGET_FILE to preconfigured git repository.
 '''
 # All about host source and target file
 HOSTS_FILENAME = "adblock_list_domains.txt"
@@ -40,6 +42,7 @@ CACHE_PATH = "cache"
 
 # misc
 ONLY_ADD_NEW = True
+AUTO_PUSH = True
 
 # ignored chars. add yours, freely.
 ignore_tuple = ("#", "-","+", ".", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
@@ -492,6 +495,50 @@ if source_file_exists and len(content) > 0:
 				print("* Written %d hosts to %s" % (cnt, TARGET_FILE))
 				
 				target.close()
+				
+				# file written an saved, now it's time to push it to git
+				if AUTO_PUSH:
+					# initialize git via sh module. Smart, eh?
+					git = sh.git.bake(_cwd=os.getcwd())
+					print("* Initialized git in %s" % os.getcwd())
+					
+					# generate commit msg
+					commit_date = time.strftime("%d.%m.%Y")
+					commit_msg = "HOSTS: %s update (%d hosts)" % (commit_date, total_hosts)
+					print("* Generated commit message: %s" % commit_msg)
+										
+					# get remote url
+					print("* Generating git url")
+					remote = git.remote().strip()
+					remote_url = git.remote("get-url", remote, "--push")
+					
+					# we'll need this later.
+					url = remote_url
+					
+					# grab username and password from config
+					from git_config import git_config
+					
+					# if git is using https instead of ssh, generate push url.
+					if git_config["https"]:
+						print("* Using HTTPS. Generating push url...")
+						
+						tmp = remote_url.split("//")
+						login_data = "%s:%s" % (git_config["username"], git_config["password"])
+						url = "%s//%s@%s" % (tmp[0].strip(), login_data, tmp[1].strip()) # no need for ':', it's left there from spliting.
+					
+					# add changes
+					git.add(TARGET_FILE)
+					print("* Adding changes..")
+					
+					# commit changes
+					git.commit(m=commit_msg)
+					print("* Commiting changes...")
+					
+					# push changes
+					print("* Pushing changes...")
+					git.push(url)
+					
+					print("* Done!")
 		else:
 			print("* No changes. You're up to date!")
 

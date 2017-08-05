@@ -1,2 +1,5 @@
 # ignore cache
 cache/
+# ignore credentials
+git_config.py
+git_config.pyc
