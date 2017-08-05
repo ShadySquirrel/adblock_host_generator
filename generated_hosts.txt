@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-08-04 08:52:41.714712
+# Generated on 2017-08-05 10:29:59.801585
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -65439,3 +65439,5 @@
 127.0.0.1 1513878.fls.doubleclick.net
 127.0.0.1 view.atdmt.com.44730.9332.302br.net
 127.0.0.1 ad215.hpg.com.br
+127.0.0.1 gocdn.site
+127.0.0.1 movie4k.org
