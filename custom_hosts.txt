@@ -1,3 +1,5 @@
 # Additional trackers not found in generated file
 graph.facebook.com
 graph.instagram.com
+edge-mqtt.facebook.com
+mqtt-mini.facebook.com
