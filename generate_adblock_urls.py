@@ -46,7 +46,7 @@ AUTO_PUSH = True
 
 # ignored chars. add yours, freely.
 ignore_tuple = ("#", "-","+", ".", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
-ignore_host_tuple = ("#", "-","+", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
+ignore_host_tuple = ("#","+", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n")
 ignore_extensions_touple = (".jpg", ".png", ".html", ".htm", ".php", ".gif")
 
 # Whitelisted domains. Use [] list!
