@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-08-05 10:29:59.801585
+# Generated on 2017-08-06 11:00:06.240497
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -65441,3 +65441,29 @@
 127.0.0.1 ad215.hpg.com.br
 127.0.0.1 gocdn.site
 127.0.0.1 movie4k.org
+127.0.0.1 vdtrack.com
+127.0.0.1 urpornnetwork.com
+127.0.0.1 tracker.nbcuas.com
+127.0.0.1 scupio.com
+127.0.0.1 analytics.epi.es
+127.0.0.1 ct.verticalhealth.net
+127.0.0.1 propvideo.net
+127.0.0.1 d17m68fovwmgxj.cloudfront.net
+127.0.0.1 flixsearch.io
+127.0.0.1 pussl13.com
+127.0.0.1 cultofmac.com
+127.0.0.1 clicknerd.com
+127.0.0.1 appier.net
+127.0.0.1 adskom.com
+127.0.0.1 aastocks.com
+127.0.0.1 patiland.co
+127.0.0.1 walternse.com
+127.0.0.1 practively.com
+127.0.0.1 line.me
+127.0.0.1 ssp.hinet.net
+127.0.0.1 vm5apis.com
+127.0.0.1 lcs.naver.
+127.0.0.1 scluster3.cliphunter.com
+127.0.0.1 tracker.streamroot.io
+127.0.0.1 sellously.info
+127.0.0.1 d2pxbld8wrqyrk.cloudfront.net
