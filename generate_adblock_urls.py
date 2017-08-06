@@ -151,6 +151,10 @@ def parse_line(y):
 		if y.endswith(ignore_extensions_touple): 
 			write = False
 		
+		# check if host entry is ending in any of those ignored stuffs.
+		if y.endswith(ignore_tuple):
+			write = False
+			
 		# check if host is in WHITELISTED_HOSTS:
 		if y in WHITELISTED_DOMAINS:
 			write = False
