@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-08-06 11:00:06.240497
+# Generated on 2017-08-06 15:14:08.496529
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -65467,3 +65467,6 @@
 127.0.0.1 tracker.streamroot.io
 127.0.0.1 sellously.info
 127.0.0.1 d2pxbld8wrqyrk.cloudfront.net
+127.0.0.1 adnxsid.com
+127.0.0.1 bitadexchange.com
+127.0.0.1 mobj.space
