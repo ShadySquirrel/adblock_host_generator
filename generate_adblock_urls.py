@@ -68,7 +68,9 @@ WHITELISTED_DOMAINS = [
 	# tumblr
 	"tumblr.com", "assets.tumblr.com", "platform.tumblr.com", "static.tumblr.com", 
 	# imgur, reddit
-	"imgur.com", "reddit.com"
+	"imgur.com", "reddit.com",
+	# github, gitlab
+	"github.com", "gitlab.com"
 	 ]
 
 #################### CONFIGURATION BLOCK END #################### 
