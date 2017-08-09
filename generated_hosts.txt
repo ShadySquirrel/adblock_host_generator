@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-08-08 13:44:16.000003
+# Generated on 2017-08-09 09:41:55.590512
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -73427,3 +73427,5 @@
 127.0.0.1 ad215.hpg.com.br
 127.0.0.1 consivenu.com
 127.0.0.1 vinterrals.info
+127.0.0.1 ssl-cd.com
+127.0.0.1 www.ssl-cd.com
