@@ -82,11 +82,13 @@ Scripts argumens. For now:
 	-cc, --clear-cache		: clears current cache folder
 	-r, -- remove	  		: removes currently generated file
 	-dh, --download-hosts	: (re)downloads host definitions file. Removes cache automatically.
+	--no-push				: don't push changes to Git. Commit is still created.
 '''
 parser = argparse.ArgumentParser()
 parser.add_argument("-cc", "--clear-cache", help="Clears current cache (removes everything from 'cache' folder", action="store_true")
 parser.add_argument("-r", "--remove", help="Removes generated hosts file before starting everything up", action="store_true")
 parser.add_argument("-dh", "--download-hosts", help="(Re)downloads host definitions file. Removes cache automatically", action="store_true")
+parser.add_argument("--no-push", help="If AUTO_PUSH is set, don't auto push (still creates the commit)", action="store_true")
 '''
 update_progress() : Displays or updates a console progress bar
  
@@ -260,8 +262,11 @@ def push_to_git():
 		print("* Commiting changes...")
 						
 		# push changes
-		print("* Pushing changes...")
-		git.push(url)
+		if not no_push:
+			print("* Pushing changes...")
+			git.push(url)
+		else:
+			print("* Commit created, to publish it, use 'git push' from your terminal")
 						
 		print("* Done!")				
 
@@ -566,11 +571,16 @@ def main():
 		except Exception, e:
 			print("!! Failed to write hosts file: %s" % repr(e))
 
+# define globals
+content = []
+total_hosts = 0
+old_hosts = []
+
+# some runtime configuration
+no_push = False
+
 if __name__ == '__main__':
-	# define globals
-	content = []
-	total_hosts = 0
-	
+	print("For command line arguments, start with -h or --help\n")
 	# parse args
 	args = parser.parse_args()
 	
@@ -585,14 +595,17 @@ if __name__ == '__main__':
 		if os.path.isfile(TARGET_FILE):
 			os.remove(TARGET_FILE)
 
-	
 	if args.download_hosts:
 		print("* Host database refresh requested. Removing cache and redownloading host database")
 		if os.path.isfile(HOSTS_FILENAME):
 			os.remove(HOSTS_FILENAME)
 		if os.path.isdir(CACHE_PATH):
 			shutil.rmtree(CACHE_PATH)
-		
+
+	if args.no_push and AUTO_PUSH:
+		no_push = args.no_push
+		print("* Creating git commit but not pushing changes.")
+			
 	# run main function
 	main()
 	
