@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-08-10 20:56:25.938533
+# Generated on 2017-08-10 22:33:56.377526
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -73447,3 +73447,4 @@
 127.0.0.1 srv.dc-1.net
 127.0.0.1 api.pubnative.net
 127.0.0.1 track.eyeviewads.com
+127.0.0.1 app-measurement.com
