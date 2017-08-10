@@ -11,7 +11,8 @@ import os
 import sys
 import time
 import sh
-
+import argparse
+import shutil
 #################### CONFIGURATION BLOCK #################### 
 ''' 
 Configuration values:
@@ -75,7 +76,17 @@ WHITELISTED_DOMAINS = [
 
 #################### CONFIGURATION BLOCK END #################### 
 
-#################### HERE BE LIONS #################### 
+#################### HERE BE LIONS ####################
+'''
+Scripts argumens. For now:
+	-cc, --clear-cache		: clears current cache folder
+	-r, -- remove	  		: removes currently generated file
+	-dh, --download-hosts	: (re)downloads host definitions file. Removes cache automatically.
+'''
+parser = argparse.ArgumentParser()
+parser.add_argument("-cc", "--clear-cache", help="Clears current cache (removes everything from 'cache' folder", action="store_true")
+parser.add_argument("-r", "--remove", help="Removes generated hosts file before starting everything up", action="store_true")
+parser.add_argument("-dh", "--download-hosts", help="(Re)downloads host definitions file. Removes cache automatically", action="store_true")
 '''
 update_progress() : Displays or updates a console progress bar
  
@@ -218,7 +229,8 @@ def push_to_git():
 	
 	# generate commit msg
 	commit_date = time.strftime("%d.%m.%Y")
-	commit_msg = "HOSTS: %s update (%d hosts)" % (commit_date, total_hosts)
+	commit_time = time.strftime("%H:%M:%S")
+	commit_msg = "HOSTS: %s update (at %s)" % (commit_date, commit_time)
 	print("* Generated commit message: %s" % commit_msg)
 	
 	# get remote url
@@ -316,7 +328,6 @@ def main():
 	# read the source file. Bail out if file isn't there
 	# again try-except, because it can fail, miserably.
 	source_file_exists = False
-	content = []
 	try:
 		with open(HOSTS_FILENAME) as f:
 			f_cont = f.readlines()
@@ -556,6 +567,33 @@ def main():
 			print("!! Failed to write hosts file: %s" % repr(e))
 
 if __name__ == '__main__':
+	# define globals
+	content = []
+	total_hosts = 0
+	
+	# parse args
+	args = parser.parse_args()
+	
+	# now, do stuff user wants
+	if args.clear_cache and not args.download_hosts:
+		print("* Clearing cache...")
+		if os.path.isdir(CACHE_PATH):
+			shutil.rmtree(CACHE_PATH)
+	
+	if args.remove:
+		print("* Removing TARGET_FILE")
+		if os.path.isfile(TARGET_FILE):
+			os.remove(TARGET_FILE)
+
+	
+	if args.download_hosts:
+		print("* Host database refresh requested. Removing cache and redownloading host database")
+		if os.path.isfile(HOSTS_FILENAME):
+			os.remove(HOSTS_FILENAME)
+		if os.path.isdir(CACHE_PATH):
+			shutil.rmtree(CACHE_PATH)
+		
+	# run main function
 	main()
 	
 #################### NO MORE LIONS :( #################### 
