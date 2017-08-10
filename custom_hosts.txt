@@ -20,3 +20,4 @@ sync.tidaltv.com
 tap-s.rubiconproject.com
 tr.pubnative.net
 track.eyeviewads.com
+app-measurement.com
