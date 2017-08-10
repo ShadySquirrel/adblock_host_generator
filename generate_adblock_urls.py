@@ -30,10 +30,10 @@ Configuration values:
 - AUTO_PUSH: automatically pushes TARGET_FILE to preconfigured git repository.
 '''
 # All about host source and target file
-HOSTS_FILENAME = "adblock_list_domains.txt"
+HOSTS_FILENAME = "sources/adblock_list_domains.txt"
 HOSTS_ONLINE = True
 HOSTS_URL = "https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/adblock_list_domains.txt"
-TARGET_FILE = "generated_hosts.txt"
+TARGET_FILE = "out/hostlist.txt"
 
 # database and cache
 DATABASE_AGE = 7
