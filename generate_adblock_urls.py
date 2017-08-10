@@ -32,7 +32,7 @@ Configuration values:
 # All about host source and target file
 HOSTS_FILENAME = "sources/adblock_list_domains.txt"
 HOSTS_ONLINE = True
-HOSTS_URL = "https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/adblock_list_domains.txt"
+HOSTS_URL = "https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/sources/adblock_list_domains.txt"
 TARGET_FILE = "out/hostlist.txt"
 
 # database and cache
