@@ -201,6 +201,27 @@ def read_old_hosts():
 
 def find_new_hosts(old, new):
 	missing_hosts = []
+	# convert old and new to sets
+	hOld = set(old)
+	hNew = set(new)
+	
+	# now find uncommon entries.
+	tmp = list(hNew^hOld)
+	
+	# and count em
+	eMissing = len(tmp)
+	
+	# and inform
+	print("* Total %d hosts not common for both new and old list" % eMissing)
+	
+	# now check if uncommon entries are present in old hosts, if not, add to missing hosts
+	for h in tmp:
+		if not h.startswith(ignore_tuple):
+			h = h.strip()
+			if h not in old:
+				missing_hosts.append(h)
+	
+	''''
 	# long loop, needs progress
 	i = 1.0
 	t = float(len(new))
@@ -220,7 +241,7 @@ def find_new_hosts(old, new):
 				
 		update_progress("Searching for new entries...", prog)
 		i+=1
-	
+	'''	
 	# finished. return
 	return list(set(missing_hosts))
 
@@ -499,17 +520,10 @@ def main():
 			
 				new_host_count = len(tmp)
 				print("* New host definitions: %d hosts" % new_host_count)
-			
-				diff = abs(new_host_count - old_hosts_count)
-				if diff > 0:
-					print("* Difference is %d hosts" % diff)
-				else:
-					print("* No difference in sizes. Still rechecking.")
-			
-				# determine how many hosts are missing - this is a bit long operation,
-				# we're talking about 40+k lines, so move to function and show progress
-				# AND DO THIS NO MATTER HOW MUCH diff IS. 
-				# Simply because we can have it 0, and still get new updates
+				
+				# determine how many hosts are missing.
+				# We're doing this no matter if old_hosts_count > new_host_count,
+				# simply because we can have it 0, and still get new updates
 				missing_hosts = find_new_hosts(old_hosts, tmp)			
 				
 				# count 'em and show info
@@ -517,12 +531,12 @@ def main():
 						
 				# inform user and extend current host list
 				if missing_hosts_c > 0:
-					print("* Appending %d hosts to existing list" % missing_hosts_c)
+					print("* Added %d new domains." % missing_hosts_c)
 					old_hosts.extend(list(missing_hosts))
 						
 					to_write = list(old_hosts)
 				else:
-					print("* Nothing found, not updating file.")
+					print("* No new domains found, not updating file.")
 					
 			# because TARGET_FILE doesn't exist or ONLY_ADD_NEW isn't set, fail to default behaviour
 			else:
