@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-08-10 22:33:56.377526
+# Generated on 2017-08-11 11:47:03.285956
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -14,7 +14,7 @@
 # Disconnect's anti-tracking (https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt) 
 # Easy list by ABP (https://easylist-downloads.adblockplus.org/easylist.txt) 
 # Peter Lowe's list (http://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&startdate%5Bday%5D=&startdate%5Bmonth%5D=&startdate%5Byear%5D=&mimetype=plaintext) 
-# Personal blocklist (https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/custom_hosts.txt) 
+# Personal blocklist (https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/sources/custom_hosts.txt) 
 ###########################################################################
 127.0.0.1 stage.hitbox.com
 127.0.0.1 www.rgadvert.com
@@ -73448,3 +73448,4 @@
 127.0.0.1 api.pubnative.net
 127.0.0.1 track.eyeviewads.com
 127.0.0.1 app-measurement.com
+127.0.0.1 xiazai2.net
