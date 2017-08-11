@@ -4,6 +4,8 @@ This is a simple, yet powerfull and configurable Python script which can be used
 
 Script is published under Apache License 2.0. See more under [LICENSE](LICENCE).
 
+You can download full hostlist from [here](https://raw.githubusercontent.com/ShadySquirrel/adblock_host_generator/master/out/hostlist.txt).
+
 ### Configuration
 All customisable and configurable values are stored under CONFIGURATION BLOCK in generate_adblock_urls.py.
 Options are:
