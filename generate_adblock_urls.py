@@ -204,45 +204,24 @@ def find_new_hosts(old, new):
 	# convert old and new to sets
 	hOld = set(old)
 	hNew = set(new)
-	
+
 	# now find uncommon entries.
 	tmp = list(hNew^hOld)
-	
+
 	# and count em
 	eMissing = len(tmp)
-	
+
 	# and inform
 	print("* Total %d hosts not common for both new and old list" % eMissing)
-	
+
 	# now check if uncommon entries are present in old hosts, if not, add to missing hosts
 	for h in tmp:
 		if not h.startswith(ignore_tuple):
 			h = h.strip()
 			if h not in old:
 				missing_hosts.append(h)
-	
-	''''
-	# long loop, needs progress
-	i = 1.0
-	t = float(len(new))
-	
-	for host in new:
-		
-		prog = i/t
-		if not host.startswith("#"):		
-			# clean before testing
-			host = host.strip()
-			host = host.strip("\n")
-			host = host.strip("\r")
-					
-			if host not in old:
-				#print("* Missing %s. appending" % host)
-				missing_hosts.append(host)
-				
-		update_progress("Searching for new entries...", prog)
-		i+=1
-	'''	
-	# finished. return
+
+	# finished. return. Doing a set() to remove possible duplicates.
 	return list(set(missing_hosts))
 
 def push_to_git():
@@ -308,52 +287,46 @@ def generate_banner():
 	
 	return banner_string
 
-# MAIN FUNCTION. ALL FUN HAPPENS HERE
-def main():
-	# grab domain list file if online
-	if HOSTS_ONLINE:
-		try:
-			# let's assume we don't have to download it
-			to_download = False
+# database downloader
+def download_database():
+	try:
+		# let's assume we don't have to download it
+		to_download = False
 			
-			# check for host database existence
-			if not os.path.isfile(HOSTS_FILENAME):
-				print("* Downloading host list base from %s" % HOSTS_URL)
+		# check for host database existence
+		if not os.path.isfile(HOSTS_FILENAME):
+			print("* Downloading host list base from %s" % HOSTS_URL)
+			to_download = True
+		else:
+			print("* Checking age of host list base")
+				
+			# now, check for database age. 
+			# Possible scenario: I've changed something on Linux and uploaded,
+			#	but for some sick reason, I'm building file on windows...
+			if check_age(HOSTS_FILENAME, DATABASE_AGE):
+				print("-> Host list base is older than %d days, redownloading" % DATABASE_AGE)
+				os.remove(HOSTS_FILENAME)
 				to_download = True
 			else:
-				print("* Checking age of host list base")
-				
-				# now, check for database age. 
-				# Possible scenario: I've changed something on Linux and uploaded,
-				#	but for some sick reason, I'm building file on windows...
-				if check_age(HOSTS_FILENAME, DATABASE_AGE):
-					print("-> Host list base is older than %d days, redownloading" % DATABASE_AGE)
-					os.remove(HOSTS_FILENAME)
-					to_download = True
-				else:
-					print("-> Host list base is still fresh enough")
+				print("-> Host list base is still fresh enough")
 			
-			# to_download flag is true, well, download now. Only reason why I've put try-except here
-			if to_download:
-				print("* Started host base download.")
-				hosts_file = urllib.URLopener()
-				hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
+		# to_download flag is true, well, download now. Only reason why I've put try-except here
+		if to_download:
+			print("* Started host base download.")
+			hosts_file = urllib.URLopener()
+			hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
 		
-		except Exception, err:
-			print("!! Host database download failed (%s), aborting" % str(err))
-			sys.exit(0)
-	else:
-		# this is for good old analogue access - all files on drives, 
-		# and when something is missing? blame user.
-		if not os.path.isfile(HOSTS_FILENAME):
-			print("!! Hosts database not found, bailing out.")
-			sys.exit(0)
-		else:
-			print("* Hosts database found, resuming operation...")
+		return True
+		
+	except Exception, err:
+		print("!! Host database download failed (%s)" % str(err))
+		return False
 
+# parse host database
+def parse_host_database():
+	content = []
 	# read the source file. Bail out if file isn't there
 	# again try-except, because it can fail, miserably.
-	source_file_exists = False
 	try:
 		with open(HOSTS_FILENAME) as f:
 			f_cont = f.readlines()
@@ -372,11 +345,32 @@ def main():
 				
 				f+=1
 			
-			source_file_exists = True
+			return (True, content)
 	except:
 		print("!! Error reading %s: %s" % (HOSTS_FILENAME, sys.exc_info()[0]))
-		raise
+		return (False, content)
 
+# MAIN FUNCTION. ALL FUN HAPPENS HERE
+def main():
+	# grab domain list file if online
+	if HOSTS_ONLINE:
+		dbStatus = download_database()
+		
+		if not dbStatus:
+			print("!! Failed to download hosts database. Abort")
+			sys.exit(1)
+	else:
+		# this is for good old analogue access - all files on drives, 
+		# and when something is missing? blame user.
+		if not os.path.isfile(HOSTS_FILENAME):
+			print("!! Hosts database not found, bailing out.")
+			sys.exit(1)
+		else:
+			print("* Hosts database found, resuming operation...")
+	
+	# haven't exited yet, parse hosts database, return state and base'
+	(source_file_exists, content) = parse_host_database()
+	
 	# store old hosts here. leave it uninitialized because it maybe won't be even used
 	old_hosts = []
 
