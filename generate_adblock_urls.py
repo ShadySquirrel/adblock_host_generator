@@ -274,6 +274,8 @@ def push_to_git():
 def generate_banner():
 	import datetime
 	
+	(state, content) = parse_host_database()
+	
 	time_now = datetime.datetime.now()
 	
 	banner_string = "###########################################################################\n"
