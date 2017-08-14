@@ -71,7 +71,11 @@ WHITELISTED_DOMAINS = [
 	# imgur, reddit
 	"imgur.com", "reddit.com",
 	# github, gitlab
-	"github.com", "gitlab.com"
+	"github.com", "gitlab.com",
+	# whitelist last.fm's audio scrobbler
+	"ws.audioscrobbler.com",
+	# bit.ly - for some reason, some sites still use it to shorten urls for twitter
+	"bit.ly"
 	 ]
 
 #################### CONFIGURATION BLOCK END #################### 
