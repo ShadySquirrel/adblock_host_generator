@@ -198,11 +198,31 @@ def read_old_hosts():
 			z = x.strip()
 			z1 = z.rstrip("\n")
 			z2 = z1.rstrip("\r")
-
-			old_hosts.append(z2)
+			
+			# check if host isn't in whitelist
+			whitelisted = check_if_whitelisted(z2)
+			
+			if not whitelisted:
+				old_hosts.append(z2)
 	
 	return old_hosts
 
+# checks if given host is in whitelist
+def check_if_whitelisted(host):
+	h = None
+	sp = host.split()
+	if len(sp) == 1:
+		h = sp[0]
+	else:
+		h = sp[1]
+		
+	whitelisted = False
+	if h in WHITELISTED_DOMAINS:
+		whitelisted = True
+		
+	return whitelisted	
+
+# finds new hosts between two hostsets
 def find_new_hosts(old, new):
 	missing_hosts = []
 	# convert old and new to sets
@@ -222,7 +242,7 @@ def find_new_hosts(old, new):
 	for h in tmp:
 		if not h.startswith(ignore_tuple):
 			h = h.strip()
-			if h not in old:
+			if h not in old and not check_if_whitelisted(h):
 				missing_hosts.append(h)
 
 	# finished. return. Doing a set() to remove possible duplicates.
@@ -514,7 +534,7 @@ def main():
 			# now, do a block for ONLY_ADD_NEW and only in case TARGET_FILE EXISTS!
 			if ONLY_ADD_NEW and os.path.exists(TARGET_FILE):
 				# total old hosts
-				old_hosts = read_old_hosts()		
+				old_hosts = read_old_hosts()
 				old_hosts_count = len(old_hosts)
 				print("* Old host definitions: %d hosts" % old_hosts_count)
 			
