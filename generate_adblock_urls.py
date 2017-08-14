@@ -175,7 +175,7 @@ def parse_line(y):
 			write = False
 			
 		# check if host is in WHITELISTED_HOSTS:
-		if y in WHITELISTED_DOMAINS:
+		if check_if_whitelisted(y):
 			write = False
 	
 	except Exception, exc:
@@ -242,8 +242,9 @@ def find_new_hosts(old, new):
 	for h in tmp:
 		if not h.startswith(ignore_tuple):
 			h = h.strip()
-			if h not in old and not check_if_whitelisted(h):
-				missing_hosts.append(h)
+			if h not in old:
+				if not check_if_whitelisted(h):
+					missing_hosts.append(h)
 
 	# finished. return. Doing a set() to remove possible duplicates.
 	return list(set(missing_hosts))
