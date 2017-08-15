@@ -27,6 +27,7 @@ Configuration values:
 - ONLY_ADD_NEW: this beauty tells this script to use data from old host file and add new entries, not to overwrite it.
 - USE_WHITELIST: allows us to whitelist some domains - for example, definitions from ABP lists contain a lot of wildstrings pointing to Google, Facebook and others, so after cleaning, we get whole domains blocked.
 - WHITELISTED_DOMAINS: contains whitelisted domains. Too lazy to move to external file
+- WHITELISTED_WILDCARD_DOMAINS: same as WHITELISTED_DOMAINS, but just for wildcards.
 - AUTO_PUSH: automatically pushes TARGET_FILE to preconfigured git repository.
 '''
 # All about host source and target file
@@ -94,6 +95,7 @@ Scripts argumens. For now:
 	-r, -- remove	  		: removes currently generated file
 	-dh, --download-hosts	: (re)downloads host definitions file. Removes cache automatically.
 	--no-push				: don't push changes to Git. Commit is still created.
+	--no-commit			: completely disables Git.
 '''
 parser = argparse.ArgumentParser()
 parser.add_argument("-cc", "--clear-cache", help="Clears current cache (removes everything from 'cache' folder", action="store_true")
