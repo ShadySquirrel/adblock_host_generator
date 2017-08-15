@@ -260,7 +260,6 @@ def find_new_hosts(old, new):
 		if not h.startswith(ignore_tuple):
 			h = h.strip()
 			if h not in old:
-				if not check_if_whitelisted(h):
 					missing_hosts.append(h)
 
 	# finished. return. Doing a set() to remove possible duplicates.
