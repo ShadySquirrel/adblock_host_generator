@@ -100,6 +100,7 @@ parser.add_argument("-cc", "--clear-cache", help="Clears current cache (removes 
 parser.add_argument("-r", "--remove", help="Removes generated hosts file before starting everything up", action="store_true")
 parser.add_argument("-dh", "--download-hosts", help="(Re)downloads host definitions file. Removes cache automatically", action="store_true")
 parser.add_argument("--no-push", help="If AUTO_PUSH is set, don't auto push (still creates the commit)", action="store_true")
+parser.add_argument("--no-commit", help="Disables AUTO_PUSH - no commit is created, no git push is made", action="store_true")
 '''
 update_progress() : Displays or updates a console progress bar
  
@@ -656,7 +657,11 @@ if __name__ == '__main__':
 	if args.no_push and AUTO_PUSH:
 		no_push = args.no_push
 		print("* Creating git commit but not pushing changes.")
-			
+	
+	if args.no_commit and AUTO_PUSH:
+		AUTO_PUSH = False
+		print("* Disabled git repo update")
+	
 	# run main function
 	main()
 	
