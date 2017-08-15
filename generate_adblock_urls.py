@@ -78,6 +78,13 @@ WHITELISTED_DOMAINS = [
 	"bit.ly"
 	 ]
 
+# Whitelisted domains. Same as WHITELISTED_DOMAINS, but to use with domains with too many subdomains 
+# for example: cloudfront CDN uses too much subdomains it's nearly impossible to catch them all
+# Use [] list!
+WHITELISTED_WILDCARD_DOMAINS = [
+	# cloudfront. uses wildstring, so many subdomains
+	"*.cloudfront.net"
+	]
 #################### CONFIGURATION BLOCK END #################### 
 
 #################### HERE BE LIONS ####################
@@ -217,9 +224,19 @@ def check_if_whitelisted(host):
 		h = sp[1]
 		
 	whitelisted = False
+	
+	# check regular list
 	if h in WHITELISTED_DOMAINS:
 		whitelisted = True
-		
+	
+	# now check if wildcard is applied
+	import fnmatch
+	for wc in WHITELISTED_WILDCARD_DOMAINS:
+		wl = fnmatch.fnmatch(host, wc)
+		if not whitelisted and whitelisted != wl:
+			whitelisted = wl
+	
+	# return now.
 	return whitelisted	
 
 # finds new hosts between two hostsets
