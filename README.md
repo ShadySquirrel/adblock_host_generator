@@ -23,6 +23,7 @@ Options are:
 | `ONLY_ADD_NEW` |  `True` | If enabled, only new/non-existing entries to TARGET_FILE are written |
 | `USE_WHITELIST` |  `True` | Enables domain whitelisting - needed to keep some sites/apps (like FB, Twitter etc) working. Implemented because of ABP's definitions. |
 | `WHITELISTED_DOMAINS` |  `[]` | Contains whitelisted domains. Will probably move to external file one day |
+| `WHITELISTED_WILDCARD_DOMAINS` |  `[]` | Same as WHITELISTED_DOMAINS, just for wildstrings. |
 | `AUTO_PUSH` |  `True` |  Automatically pushes TARGET_FILE to preconfigured git repository. |
 
 ### Command-line arguments
@@ -34,10 +35,11 @@ Current set of command-line arguments:
 
 | Argument | Description |
 |:-------|:-----------|
-| -cc<br>--clear-cache | clears current cache folder |
-|	-r<br> -- remove| removes currently generated file |
-| -dh<br>--download-hosts	| (re)downloads host definitions file. Removes cache automatically. |
-|	--no-push	| don't push changes to Git. Commit is still created. |
+| -cc<br>--clear-cache | Clears current cache - removes folder and files in it |
+|	-r<br> -- remove| Removes currently generated file |
+| -dh<br>--download-hosts	| (Re)downloads host definitions file. Removes cache automatically. |
+|	--no-push	| Don't push changes to Git. Commit is still created. |
+|	--no-commit	| Disables Git support completely. |
 
 ## Issues, requests, contact
 Please use GitHub's Issues for any requests, improvements, error reporting and such. Feel free to fork and send merge requests, I never had merge request before. Just respect my ownership over original work.
