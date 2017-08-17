@@ -78,7 +78,9 @@ WHITELISTED_DOMAINS = [
 	# bit.ly - for some reason, some sites still use it to shorten urls for twitter
 	"bit.ly",
 	# gleam.io is blocked, no reason why?
-	"gleam.io"
+	"gleam.io",
+	# amazon AWS
+	"s3.amazonaws.com"
 	 ]
 
 # Whitelisted domains. Same as WHITELISTED_DOMAINS, but to use with domains with too many subdomains 
