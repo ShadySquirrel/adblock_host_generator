@@ -76,7 +76,9 @@ WHITELISTED_DOMAINS = [
 	# whitelist last.fm's audio scrobbler
 	"ws.audioscrobbler.com",
 	# bit.ly - for some reason, some sites still use it to shorten urls for twitter
-	"bit.ly"
+	"bit.ly",
+	# gleam.io is blocked, no reason why?
+	"gleam.io"
 	 ]
 
 # Whitelisted domains. Same as WHITELISTED_DOMAINS, but to use with domains with too many subdomains 
@@ -84,7 +86,9 @@ WHITELISTED_DOMAINS = [
 # Use [] list!
 WHITELISTED_WILDCARD_DOMAINS = [
 	# cloudfront. uses wildstring, so many subdomains
-	"*.cloudfront.net"
+	"*.cloudfront.net",
+	# googleapis.com
+	"*.googleapis.com"
 	]
 #################### CONFIGURATION BLOCK END #################### 
 
