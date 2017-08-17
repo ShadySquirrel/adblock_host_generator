@@ -98,7 +98,8 @@ WHITELISTED_WILDCARD_DOMAINS = [
 '''
 Scripts argumens. For now:
 	-cc, --clear-cache		: clears current cache folder
-	-r, -- remove	  		: removes currently generated file
+	-r, --remove	  			: removes currently generated file
+	-dh, --force-generate	:	forces regeneration of TARGET_FILE, with or without changes. Useful if whitelist was changed but no other updates found.
 	-dh, --download-hosts	: (re)downloads host definitions file. Removes cache automatically.
 	--no-push				: don't push changes to Git. Commit is still created.
 	--no-commit			: completely disables Git.
@@ -106,6 +107,7 @@ Scripts argumens. For now:
 parser = argparse.ArgumentParser()
 parser.add_argument("-cc", "--clear-cache", help="Clears current cache (removes everything from 'cache' folder", action="store_true")
 parser.add_argument("-r", "--remove", help="Removes generated hosts file before starting everything up", action="store_true")
+parser.add_argument("-fg", "--force-generate", help="Generates new hosts file even if no changes are visible.", action="store_true")
 parser.add_argument("-dh", "--download-hosts", help="(Re)downloads host definitions file. Removes cache automatically", action="store_true")
 parser.add_argument("--no-push", help="If AUTO_PUSH is set, don't auto push (still creates the commit)", action="store_true")
 parser.add_argument("--no-commit", help="Disables AUTO_PUSH - no commit is created, no git push is made", action="store_true")
@@ -579,11 +581,15 @@ def main():
 				if missing_hosts_c > 0:
 					print("* Added %d new domains." % missing_hosts_c)
 					old_hosts.extend(list(missing_hosts))
-						
 					to_write = list(old_hosts)
+				
 				else:
-					print("* No new domains found, not updating file.")
-					
+					if regenerate:
+						print("* No new hosts found. Still, regenerating file as requested...")
+						to_write = list(old_hosts)
+					else:
+						print("* No new domains found, not updating file.")
+
 			# because TARGET_FILE doesn't exist or ONLY_ADD_NEW isn't set, fail to default behaviour
 			else:
 				to_write = list(tmp)
@@ -638,6 +644,7 @@ old_hosts = []
 
 # some runtime configuration
 no_push = False
+regenerate = False
 
 if __name__ == '__main__':
 	print("For command line arguments, start with -h or --help\n")
@@ -670,6 +677,10 @@ if __name__ == '__main__':
 		AUTO_PUSH = False
 		print("* Disabled git repo update")
 	
+	if args.force_generate:
+		print("* Regenrating hosts file even if no changes available")
+		regenerate = args.force_generate
+		
 	# run main function
 	main()
 	
