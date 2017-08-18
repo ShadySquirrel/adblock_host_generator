@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-08-19 00:32:36.835911
+# Generated on 2017-08-19 00:40:35.618656
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -73143,3 +73143,4 @@
 127.0.0.1 clickguardian.co.uk
 127.0.0.1 testpixel.net
 127.0.0.1 rumpelstiltskinhead.com
+127.0.0.1 ad-creatives-public.commondatastorage.googleapis.com
