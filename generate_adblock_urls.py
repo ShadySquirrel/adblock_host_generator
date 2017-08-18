@@ -54,7 +54,7 @@ ignore_extensions_touple = (".jpg", ".png", ".html", ".htm", ".php", ".gif")
 # Whitelisted domains. Use [] list!
 WHITELISTED_DOMAINS = [
 	# google block. google code not shown because it's dropped.
-	"google.com", "plus.google.com", "drive.google.com", "video.google.com", "apis.google.com", "docs.google.com", "keep.google.com", "play.google.com", "youtube.com",
+	"google.com", "plus.google.com", "drive.google.com", "video.google.com", "apis.google.com", "docs.google.com", "keep.google.com", "play.google.com", "youtube.com", "imasdk.googleapis.com", "ajax.googleapis.com",
 	# facebook block. Possibly more to add but, who cares?
 	"facebook.com", 
 	# twitter block
@@ -89,8 +89,6 @@ WHITELISTED_DOMAINS = [
 WHITELISTED_WILDCARD_DOMAINS = [
 	# cloudfront. uses wildstring, so many subdomains
 	"*.cloudfront.net",
-	# googleapis.com
-	"*.googleapis.com"
 	]
 #################### CONFIGURATION BLOCK END #################### 
 
