@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-08-19 00:40:35.618656
+# Generated on 2017-08-21 16:20:08.215155
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -73144,3 +73144,12 @@
 127.0.0.1 testpixel.net
 127.0.0.1 rumpelstiltskinhead.com
 127.0.0.1 ad-creatives-public.commondatastorage.googleapis.com
+127.0.0.1 cloudfunctions.net
+127.0.0.1 bobblewrite.com
+127.0.0.1 rtb123.com
+127.0.0.1 event.api.drift.com
+127.0.0.1 pixel.zumby.io
+127.0.0.1 bob-bob-bobble.com
+127.0.0.1 h6y654wgfdhd.com
+127.0.0.1 tower.moviepilot.com
+127.0.0.1 ad.xmovies8.tv
