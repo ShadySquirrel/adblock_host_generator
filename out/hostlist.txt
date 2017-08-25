@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-08-21 16:22:14.395601
+# Generated on 2017-08-25 17:11:58.145683
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -73152,3 +73152,10 @@
 127.0.0.1 h6y654wgfdhd.com
 127.0.0.1 tower.moviepilot.com
 127.0.0.1 ad.xmovies8.tv
+127.0.0.1 filecrypt.cc
+127.0.0.1 hoomefodl.com
+127.0.0.1 geo.xcel.io
+127.0.0.1 gocp.stroeermediabrands.de
+127.0.0.1 js.stroeermediabrands.de
+127.0.0.1 stencee.com
+127.0.0.1 yataohome.com
