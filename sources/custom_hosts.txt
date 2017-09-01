@@ -21,3 +21,6 @@ tap-s.rubiconproject.com
 tr.pubnative.net
 track.eyeviewads.com
 app-measurement.com
+ads.aerserv.com
+dev.appboy.com
+stats.appsflyer.com
