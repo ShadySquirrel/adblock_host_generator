@@ -80,7 +80,9 @@ WHITELISTED_DOMAINS = [
 	# gleam.io is blocked, no reason why?
 	"gleam.io",
 	# amazon AWS
-	"s3.amazonaws.com"
+	"s3.amazonaws.com",
+	# booking...
+	"booking.com"
 	 ]
 
 # Whitelisted domains. Same as WHITELISTED_DOMAINS, but to use with domains with too many subdomains 
