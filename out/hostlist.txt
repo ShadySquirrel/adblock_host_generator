@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-09-01 23:48:15.188864
+# Generated on 2017-09-05 21:16:50.866182
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -73163,3 +73163,14 @@
 127.0.0.1 dev.appboy.com
 127.0.0.1 stats.appsflyer.com
 127.0.0.1 ads.aerserv.com
+127.0.0.1 adsvlad.info
+127.0.0.1 u.cubeupload.com
+127.0.0.1 www.cpm10.com
+127.0.0.1 jqueryserve.com
+127.0.0.1 jlt123.com
+127.0.0.1 track.mobicast.io
+127.0.0.1 grabify.link
+127.0.0.1 tredan.com.sg
+127.0.0.1 bangdom.com
+127.0.0.1 trafficdelivery1.com
+127.0.0.1 redzxxxtube.com
