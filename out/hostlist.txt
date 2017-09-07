@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-09-05 21:16:50.866182
+# Generated on 2017-09-07 14:47:38.272238
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -73174,3 +73174,5 @@
 127.0.0.1 bangdom.com
 127.0.0.1 trafficdelivery1.com
 127.0.0.1 redzxxxtube.com
+127.0.0.1 diankan.cc
+127.0.0.1 hncshunyin.cn
