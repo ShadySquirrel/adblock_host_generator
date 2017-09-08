@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-09-07 14:47:38.272238
+# Generated on 2017-09-08 20:04:31.186030
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -73176,3 +73176,8 @@
 127.0.0.1 redzxxxtube.com
 127.0.0.1 diankan.cc
 127.0.0.1 hncshunyin.cn
+127.0.0.1 products.gobankingrates.com
+127.0.0.1 international-property.countrylife.co.uk
+127.0.0.1 cdn.comparecards.com
+127.0.0.1 analytics.vanillaforums.com
+127.0.0.1 trkn.us
