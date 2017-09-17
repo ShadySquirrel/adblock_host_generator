@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-09-10 21:31:45.338439
+# Generated on 2017-09-17 18:07:06.497981
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -73125,3 +73125,14 @@
 127.0.0.1 1513878.fls.doubleclick.net
 127.0.0.1 view.atdmt.com.44730.9332.302br.net
 127.0.0.1 ad215.hpg.com.br
+127.0.0.1 chukskel.ddns.net
+127.0.0.1 99976.com
+127.0.0.1 attawala.com.sa
+127.0.0.1 realwire123.ddns.net
+127.0.0.1 mafian222.myftp.org
+127.0.0.1 ezpa.ga
+127.0.0.1 hlookehab.top
+127.0.0.1 lokpanels.info
+127.0.0.1 sal.isanook.com
+127.0.0.1 china-hangyi.com
+127.0.0.1 fojasoftwareaudio.ignorelist.com
