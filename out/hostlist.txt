@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-09-17 18:07:06.497981
+# Generated on 2017-09-18 11:38:20.465036
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -73136,3 +73136,5 @@
 127.0.0.1 sal.isanook.com
 127.0.0.1 china-hangyi.com
 127.0.0.1 fojasoftwareaudio.ignorelist.com
+127.0.0.1 i.imedia.cz
+127.0.0.1 vimeocdn.com
