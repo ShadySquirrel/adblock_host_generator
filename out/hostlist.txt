@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-09-18 11:38:20.465036
+# Generated on 2017-09-24 21:09:38.747076
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -73138,3 +73138,34 @@
 127.0.0.1 fojasoftwareaudio.ignorelist.com
 127.0.0.1 i.imedia.cz
 127.0.0.1 vimeocdn.com
+127.0.0.1 yifymovies.to
+127.0.0.1 rnet.plus
+127.0.0.1 smi2.ru
+127.0.0.1 coin-hive.com
+127.0.0.1 affiliationjs.s3.amazonaws.com
+127.0.0.1 ssl4anyone5.com
+127.0.0.1 tags.sprizzy.com
+127.0.0.1 lockerdomecdn.com
+127.0.0.1 news.smi2.ru
+127.0.0.1 expresided.info
+127.0.0.1 copush.com
+127.0.0.1 log.artipbox.net
+127.0.0.1 autodealer.co.za
+127.0.0.1 dailymaverick.co.za
+127.0.0.1 adxprts.com
+127.0.0.1 jsecoin.com
+127.0.0.1 washingtonexaminer.com
+127.0.0.1 jordantimes.com
+127.0.0.1 anews.com
+127.0.0.1 adnext.org
+127.0.0.1 inadequal.com
+127.0.0.1 pussl10.com
+127.0.0.1 stripedcollar.net
+127.0.0.1 pussl28.com
+127.0.0.1 trymynewspirit.com
+127.0.0.1 pejqoq4cafo3bg9yqqqtk5e6s6.com
+127.0.0.1 gleaminist.com
+127.0.0.1 mediamanager.co.za
+127.0.0.1 24smi.net
+127.0.0.1 rockincontent.net
+127.0.0.1 acrossiblel.info
