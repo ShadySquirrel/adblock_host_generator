@@ -82,7 +82,7 @@ WHITELISTED_DOMAINS = [
 	# amazon AWS
 	"s3.amazonaws.com",
 	# booking...
-	"booking.com"
+	"booking.com",
 	 ]
 
 # Whitelisted domains. Same as WHITELISTED_DOMAINS, but to use with domains with too many subdomains 
@@ -91,6 +91,8 @@ WHITELISTED_DOMAINS = [
 WHITELISTED_WILDCARD_DOMAINS = [
 	# cloudfront. uses wildstring, so many subdomains
 	"*.cloudfront.net",
+	# XDA developers. I have no idea which list blocked it.
+	"*.xda-developers.com",
 	]
 #################### CONFIGURATION BLOCK END #################### 
 
