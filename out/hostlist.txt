@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-10-05 23:21:37.732917
+# Generated on 2017-10-10 13:01:39.295326
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -48270,7 +48270,6 @@
 127.0.0.1 cashprom.ru
 127.0.0.1 vogozaw.ru
 127.0.0.1 www.counter4all.de
-127.0.0.1 clickcdn.xda-developers.com
 127.0.0.1 digital-zoom.de
 127.0.0.1 b344-7507-e4c2-b742.reporo.net
 127.0.0.1 ad.doubleclick.net.17394.9085.302br.net
@@ -73287,3 +73286,54 @@
 127.0.0.1 www.corolate.win
 127.0.0.1 unqpun.pro
 127.0.0.1 xoalt.com
+127.0.0.1 78tdd75.com
+127.0.0.1 milanofinanza.it
+127.0.0.1 abeagle-public.buzzfeed.com
+127.0.0.1 olcme.yildiz.edu.tr
+127.0.0.1 opinionbar.com
+127.0.0.1 buzzadexchange.com
+127.0.0.1 miner.pr0gramm.com
+127.0.0.1 affsharkoffer.com
+127.0.0.1 adpass.co.uk
+127.0.0.1 168logger.com
+127.0.0.1 bitmovin.com
+127.0.0.1 addkt.com
+127.0.0.1 www.affsharkoffer.com
+127.0.0.1 acknowinge.info
+127.0.0.1 imageshimage.com
+127.0.0.1 rainoffers.afftrack.com
+127.0.0.1 projectpoi.com
+127.0.0.1 eventlog.jackpot.de
+127.0.0.1 jroqvbvw.info
+127.0.0.1 sel-sel-fie.com
+127.0.0.1 acknowing.com
+127.0.0.1 wbtrk.net
+127.0.0.1 www.popcash.net
+127.0.0.1 gcpdata.telegraph.co.uk
+127.0.0.1 cnhv.co
+127.0.0.1 gus.host
+127.0.0.1 analytics.newscred.com
+127.0.0.1 geniusdisplay.com
+127.0.0.1 imagenpic.com
+127.0.0.1 azvjudwr.info
+127.0.0.1 goodolddownloads.com
+127.0.0.1 jyhfuqoh.info
+127.0.0.1 zm232.com
+127.0.0.1 loles.neostrada.pl
+127.0.0.1 bondinra.com
+127.0.0.1 video-cdn.net
+127.0.0.1 kdowqlpt.info
+127.0.0.1 browser-update.org
+127.0.0.1 higheurest.com
+127.0.0.1 adexchangegate.com
+127.0.0.1 pinimg.com
+127.0.0.1 analytics.myfinance.com
+127.0.0.1 milotree.com
+127.0.0.1 maxonclick.com
+127.0.0.1 contentsquare.net
+127.0.0.1 xbasfbno.info
+127.0.0.1 haggilder.com
+127.0.0.1 zisboombah.net
+127.0.0.1 pong.gannettdigital.com
+127.0.0.1 ppoi.org
+127.0.0.1 bitcoadz.io
