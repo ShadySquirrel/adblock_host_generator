@@ -83,6 +83,8 @@ WHITELISTED_DOMAINS = [
 	"s3.amazonaws.com",
 	# booking...
 	"booking.com",
+	# XDA developers. I have no idea which list blocked it.
+	"xda-developers.com",
 	 ]
 
 # Whitelisted domains. Same as WHITELISTED_DOMAINS, but to use with domains with too many subdomains 
