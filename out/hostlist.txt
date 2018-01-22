@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2017-12-29 01:01:32.463378
+# Generated on 2018-01-22 10:34:15.271635
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -54645,3 +54645,33 @@
 127.0.0.1 qoredi.com
 127.0.0.1 xml.clickredirection.com
 127.0.0.1 hypoot.com
+127.0.0.1 www.dcw.1592878.com
+127.0.0.1 t6t8.com
+127.0.0.1 waudeesestew.com
+127.0.0.1 ssl.safepoollink.com
+127.0.0.1 boryin.com
+127.0.0.1 trk.airproof.party
+127.0.0.1 bs50tds.com
+127.0.0.1 www.cj.com
+127.0.0.1 t.ml00.net
+127.0.0.1 trktrk020.com
+127.0.0.1 keybank.com-update.cargoinspec.com
+127.0.0.1 members.cj.com
+127.0.0.1 dgbangyuan.cn
+127.0.0.1 www.jdoqocy.com
+127.0.0.1 demo.cj.com
+127.0.0.1 bvpdf9.u9a.wentserver.com
+127.0.0.1 ww.cj.com
+127.0.0.1 tracking.prmtracking.com
+127.0.0.1 dcw.1592878.com
+127.0.0.1 www.makersfile.com
+127.0.0.1 makersfile.com
+127.0.0.1 14119276be0852.com
+127.0.0.1 itrafficcontrol.com
+127.0.0.1 678277.com
+127.0.0.1 trcktm.net
+127.0.0.1 www.trcktm.net
+127.0.0.1 mjhkj8.u5a.wentserver.com
+127.0.0.1 wwww.cj.com
+127.0.0.1 vtrack.wdavtrk.com
+127.0.0.1 trk.wdacashtrk.com
