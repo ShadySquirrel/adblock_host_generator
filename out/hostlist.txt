@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2018-01-22 10:34:15.271635
+# Generated on 2018-02-10 00:22:58.427126
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -54675,3 +54675,40 @@
 127.0.0.1 wwww.cj.com
 127.0.0.1 vtrack.wdavtrk.com
 127.0.0.1 trk.wdacashtrk.com
+127.0.0.1 pleasewaitlonger.com
+127.0.0.1 a.volvelle.tech
+127.0.0.1 267333.com
+127.0.0.1 www.a.volvelle.tech
+127.0.0.1 www.pleasewaitlonger.com
+127.0.0.1 clickchecker.co.uk
+127.0.0.1 www.clicktrough.com
+127.0.0.1 trktrk026.com
+127.0.0.1 eu.a.volvelle.tech
+127.0.0.1 usw.a.volvelle.tech
+127.0.0.1 www.ilovecookies.co
+127.0.0.1 paypal.com-resolution.center-ujpmq2vvcy7.l06v.com
+127.0.0.1 gsimon.edu.free.fr
+127.0.0.1 ztrack.pw
+127.0.0.1 use.a.volvelle.tech
+127.0.0.1 www.track112.com
+127.0.0.1 www.kqzyfj.com
+127.0.0.1 www.digitalngo.com
+127.0.0.1 go.playmmogames.com
+127.0.0.1 ilovecookies.co
+127.0.0.1 global.ymtracking.com
+127.0.0.1 digitalngo.com
+127.0.0.1 volvelle-ads-cdn.azureedge.net
+127.0.0.1 sftwrads.com
+127.0.0.1 r.leadzupc.com
+127.0.0.1 www.ztrack.pw
+127.0.0.1 go2linkfast.com
+127.0.0.1 www.content-ad.com
+127.0.0.1 tracker.divvit.com
+127.0.0.1 go2funz.com
+127.0.0.1 www.clickchecker.co.uk
+127.0.0.1 goto.myfunbreak.com
+127.0.0.1 wmedia.adk2x.com
+127.0.0.1 smartoffer.site
+127.0.0.1 content-ad.com
+127.0.0.1 track112.com
+127.0.0.1 normalexchange.com
