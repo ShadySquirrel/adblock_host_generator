@@ -1,5 +1,5 @@
 ###########################################################################
-# Generated on 2018-03-10 15:57:19.286138
+# Generated on 2018-03-27 11:29:50.072768
 # Contains hosts from:
 # MVPS hosts (http://winhelp2002.mvps.org/hosts.txt) 
 # hpHosts (http://hosts-file.net/.%5Cad_servers.txt) 
@@ -56512,3 +56512,13 @@
 127.0.0.1 mobilogia.go2affise.com
 127.0.0.1 cpmland.com
 127.0.0.1 verumm.go2affise.com
+127.0.0.1 twoclickdeal.com
+127.0.0.1 laos.luangprabang.free.fr
+127.0.0.1 k6r.net
+127.0.0.1 annedouglas.com
+127.0.0.1 0.0.0.0.spiegel-de.spiegel.de
+127.0.0.1 yemobiads.com
+127.0.0.1 zokidif.com
+127.0.0.1 suriflowers.com
+127.0.0.1 daylei.com
+127.0.0.1 www.yemobiads.com
