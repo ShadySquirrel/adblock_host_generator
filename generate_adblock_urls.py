@@ -47,8 +47,8 @@ ONLY_ADD_NEW = True
 AUTO_PUSH = True
 
 # ignored chars. add yours, freely.
-ignore_tuple = ("#", "-","+", ".", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
-ignore_host_tuple = ("#","+", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n")
+ignore_tuple = ("#", "+", ".", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "_", "[", "]", ":", ";", "=", " ", "\r", "\n", " ")
+ignore_host_tuple = ("#","+", ",", "/", "!", "?", "^", "$", "*", "|", "@", "&", "[", "]", ":", ";", "=", " ", "\r", "\n")
 ignore_extensions_touple = (".jpg", ".png", ".html", ".htm", ".php", ".gif")
 
 # Whitelisted domains. Use [] list!
@@ -206,6 +206,18 @@ def parse_line(y):
 			w = z.split("/", 1)
 			y = w[0].strip()
 		
+		# if rule begins with 0.0.0.0 or 127.0.0.1, split it.
+		domains_touple = ("0.0.0.0", "127.0.0.1")
+		if y.startswith(domains_touple):
+			logger.debug("-> Line begins with address, check for ports and split it")
+			w = y.split()
+			y = w[1]
+			# now, if domain has a port, remove it.
+			if ":" in y:
+				logger.debug("-> line contains a port, removing port")
+				w2 = y.split(":")
+				y = w2[0]
+			
 		# specifics cleaned, now do standard checks. First, check if host entry is valid
 		if y.startswith(ignore_tuple): 
 			write = False
