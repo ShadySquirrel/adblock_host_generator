@@ -115,6 +115,29 @@ parser.add_argument("-fg", "--force-generate", help="Generates new hosts file ev
 parser.add_argument("-dh", "--download-hosts", help="(Re)downloads host definitions file. Removes cache automatically", action="store_true")
 parser.add_argument("--no-push", help="If AUTO_PUSH is set, don't auto push (still creates the commit)", action="store_true")
 parser.add_argument("--no-commit", help="Disables AUTO_PUSH - no commit is created, no git push is made", action="store_true")
+
+'''
+Add debug logging. Really needed because I want to add as many domains as possible and it's almost impossible to read all of output during runtime
+'''
+import logging
+from logging.config import dictConfig
+
+if not os.path.exists("logs/"):
+	os.mkdir("logs")
+	
+logger = logging.getLogger()
+log_name = "logs/debug_%s.log" % time.ctime()
+
+handler = logging.FileHandler(log_name)
+formatter = logging.Formatter(
+        '%(levelname)-2s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)
+
+logger = logging.getLogger()
+logger.info("Starting host generation at %s..", time.ctime())
+
 '''
 update_progress() : Displays or updates a console progress bar
  
@@ -151,7 +174,9 @@ def check_age(file, max_age):
 	if os.path.isfile(file):
 		created = os.path.getmtime(file)
 	else:
+		logging.error("can't check age for non-existing file %s", file)
 		created = 0
+	
 	old_age = now - 60*60*24*max_age
 	
 	# guess that file is always newer than max_age, and return False.
@@ -166,11 +191,13 @@ def check_age(file, max_age):
 # parses sent string and returns value and state
 def parse_line(y):
 	# this defaults to true. runtime changes to false
-	write = True 
+	write = True
 	
+	logger.info("parsing line %s" , y)
 	try: # chances for errors are slim, but better safe than sorry.
 		# some lists have specific rules beggining with ||, filter them out. 
 		if y.startswith("||"):
+			logger.debug("-> line requires spliting and filtering...")
 			# this should be done bit better?
 			y = y.strip("||") 
 			z1 = y.split("^") 
@@ -182,33 +209,43 @@ def parse_line(y):
 		# specifics cleaned, now do standard checks. First, check if host entry is valid
 		if y.startswith(ignore_tuple): 
 			write = False
+			logger.debug("-> it begins with an ignored symbol")
 		
 		# check if host is valid - if hosts contains any of symbols from list, ignore it. 
 		for sym in ignore_host_tuple: 
 			if sym in y: 
-				write = False  
+				write = False 
+				logger.debug("-> it contains an ignored symbol '%s'" % sym)
 		
 		# check for file extensions. we're blocking domains, not specific files 
 		if y.endswith(ignore_extensions_touple): 
 			write = False
+			logger.debug("-> it ends with an extension")
 		
 		# check if host entry is ending in any of those ignored stuffs.
 		if y.endswith(ignore_tuple):
 			write = False
+			logger.debug("-> it ends with an ignored symbol")
 			
 		# check if host is in WHITELISTED_HOSTS:
 		if check_if_whitelisted(y):
 			write = False
+			logger.debug("-> it's whitelisted!")
+		
+		# all fine, return
+		if not write:
+			logger.debug("!!! %s is not valid line. Reasons above." % y)			
 	
-	except Exception, exc:
-		print "ERROR: parsing failed: %s" % str(exc)
+	except Exception as exc:
+		err = "ERROR: parsing failed: %s" % str(exc)
+		logger.error(err)
 		write = False
-	
-	# all fine, return
+		
 	return (write, y)
 
 # reads old hosts file and returns a list of hosts
 def read_old_hosts():
+	logger.info("Started reading old hosts...")
 	old_hosts = []
 	lines = []
 	with open(TARGET_FILE, "r") as target:
@@ -242,12 +279,15 @@ def check_if_whitelisted(host):
 	
 	# check regular list
 	if h in WHITELISTED_DOMAINS:
+		logger.debug("%s is whitelisted in WHITELISTED_DOMAINS", h)
 		whitelisted = True
 	
 	# now check if wildcard is applied
 	import fnmatch
 	for wc in WHITELISTED_WILDCARD_DOMAINS:
-		wl = fnmatch.fnmatch(host, wc)
+		wl = fnmatch.fnmatch(h, wc)
+		if wl:
+			logger.debug("%s is whitelisted (partial match) in WHITELISTED_WILDCARD_DOMAINS", h)
 		if not whitelisted and whitelisted != wl:
 			whitelisted = wl
 	
@@ -256,6 +296,7 @@ def check_if_whitelisted(host):
 
 # finds new hosts between two hostsets
 def find_new_hosts(old, new):
+	logging.info("Starting search for new hosts...")
 	missing_hosts = []
 	# convert old and new to sets
 	hOld = set(old)
@@ -268,33 +309,43 @@ def find_new_hosts(old, new):
 	eMissing = len(tmp)
 
 	# and inform
-	print("* Total %d hosts not common for both new and old list" % eMissing)
+	msg = "* Total %d hosts not common for both new and old list" % eMissing
+	print(msg)
+	logging.debug(msg)
 
 	# now check if uncommon entries are present in old hosts, if not, add to missing hosts
+	print("-> Searching for missing entries, be patient, this may take a while")
 	for h in tmp:
 		if not h.startswith(ignore_tuple):
 			h = h.strip()
 			if h not in old:
-					missing_hosts.append(h)
+				logging.debug("-> %s is not found in old hosts, marking as new", h)
+				missing_hosts.append(h)
 
 	# finished. return. Doing a set() to remove possible duplicates.
 	return list(set(missing_hosts))
 
 def push_to_git():
+	logger.info("Starting git push")
 	# initialize git via sh module. Smart, eh?
 	git = sh.git.bake(_cwd=os.getcwd())
-	print("* Initialized git in %s" % os.getcwd())
+	msg = "* Initialized git in %s" % os.getcwd()
+	print(msg)
+	logging.debug(msg)
+	
 	
 	# generate commit msg
 	commit_date = time.strftime("%d.%m.%Y")
 	commit_time = time.strftime("%H:%M:%S")
 	commit_msg = "HOSTS: %s update (at %s)" % (commit_date, commit_time)
 	print("* Generated commit message: %s" % commit_msg)
+	logging.debug("* Commit message: %s", commit_msg)
 	
 	# get remote url
 	print("* Generating git url")
 	remote = git.remote().strip()
 	remote_url = git.remote("get-url", remote, "--push")
+	logging.debug("* git push url: %s", remote_url)
 	
 	# we'll need this later.
 	url = remote_url
@@ -312,17 +363,21 @@ def push_to_git():
 		# add changes
 		git.add(TARGET_FILE)
 		print("* Adding changes..")
+		logger.debug("* adding changes to git commit")
 						
 		# commit changes
 		git.commit(m=commit_msg)
 		print("* Commiting changes...")
+		logger.debug("* commiting...")
 						
 		# push changes
 		if not no_push:
 			print("* Pushing changes...")
+			logger.debug("* pushing changes.")
 			git.push(url)
 		else:
 			print("* Commit created, to publish it, use 'git push' from your terminal")
+			logger.debug("* commit is created, but not pushed. push  manually please")
 						
 		print("* Done!")				
 
@@ -347,22 +402,30 @@ def generate_banner():
 
 # database downloader
 def download_database():
+	logger.info("Starting database download...")
 	try:
 		# let's assume we don't have to download it
 		to_download = False
 			
 		# check for host database existence
 		if not os.path.isfile(HOSTS_FILENAME):
-			print("* Downloading host list base from %s" % HOSTS_URL)
+			msg = "* Downloading host list base from %s" % HOSTS_URL
+			print(msg)
+			logger.warning("! hosts database file not found")
+			logger.debug(msg)
 			to_download = True
 		else:
-			print("* Checking age of host list base")
+			msg = "* Checking age of host list base"
+			logger.debug(msg)
+			print(msg)
 				
 			# now, check for database age. 
 			# Possible scenario: I've changed something on Linux and uploaded,
 			#	but for some sick reason, I'm building file on windows...
 			if check_age(HOSTS_FILENAME, DATABASE_AGE):
-				print("-> Host list base is older than %d days, redownloading" % DATABASE_AGE)
+				msg = "-> Host list base is older than %d days, redownloading" % DATABASE_AGE
+				print(msg)
+				logger.debug(msg)
 				os.remove(HOSTS_FILENAME)
 				to_download = True
 			else:
@@ -376,8 +439,9 @@ def download_database():
 		
 		return True
 		
-	except Exception, err:
+	except Exception as err:
 		print("!! Host database download failed (%s)" % str(err))
+		logger.error("Host database download failed (%s)" % str(err))
 		return False
 
 # parse host database
@@ -406,6 +470,7 @@ def parse_host_database():
 			return (True, content)
 	except:
 		print("!! Error reading %s: %s" % (HOSTS_FILENAME, sys.exc_info()[0]))
+		logger.error("Error reading %s: %s" % (HOSTS_FILENAME, sys.exc_info()[0]))
 		return (False, content)
 
 # MAIN FUNCTION. ALL FUN HAPPENS HERE
@@ -416,11 +481,13 @@ def main():
 		
 		if not dbStatus:
 			print("!! Failed to download hosts database. Abort")
+			logger.error("Failed to download hosts database. Aborting!")
 			sys.exit(1)
 	else:
 		# this is for good old analogue access - all files on drives, 
 		# and when something is missing? blame user.
 		if not os.path.isfile(HOSTS_FILENAME):
+			logger.error("%s doesn't exist. Aborting!", HOSTS_FILENAME)
 			print("!! Hosts database not found, bailing out.")
 			sys.exit(1)
 		else:
@@ -471,18 +538,21 @@ def main():
 				dl_succ = True
 			except Exception as e:
 				print("!! Failed to fetch data from %s: %s" % (url[1], repr(e)))
+				logger.error("Failed to fetch data from %s: %s" % (url[1], repr(e)))
 				# not sure if I should bail here or not?
 		
 		# yeah, we're bailing out like there is no tomorrow.
 		if dl_succ:
 			print("* Finished downloading data")
 		else:
-			print "!! Couldn't download host sources, bailing out"
+			print("!! Couldn't download host sources, bailing out")
+			logger.error("Couldn't download host sources, bailing out")
 			sys.exit(0)
 		
 		# start merging source files and removing them after
 		d = 0
 		print("* Processing sources...")
+		logger.info("Started processing source files...")
 		
 		# this, ladies and gentleman, is our main container for hosts
 		# damn python, I can't remember how's this thing called. Touple? Array? Fuck it.
@@ -500,6 +570,7 @@ def main():
 				
 				# open host source file and read it, determine it's size, strip it and parse it
 				with open(path) as source:
+					logger.debug("-> parsing contents of %s", path)
 					input_line = source.readlines()
 					s_size = len(input_line)
 					
@@ -542,20 +613,23 @@ def main():
 							# and increment percentage, rinse-repeat.
 							j+=1
 
-					except Exception, drnd:
+					except Exception as drnd:
 						print("!! Failed  processing entry %s: %s" % (str(y), repr(drnd)))
+						logger.error("Failed  processing entry %s: %s" % (str(y), repr(drnd)))
 								
 					# remove tmp file
 					if not USE_CACHE:
+						logger.debug("removing cached file...")
 						os.remove(path)
 				
-			except Exception, err:
-				print("!! Failed reading data from %s: %s" % (str(c_url[1]), repr(err)))	
-
+			except Exception as err:
+				print("!! Failed reading data from %s: %s" % (str(c_url[1]), repr(err)))
+				logger.error(" Failed reading data from %s: %s" % (str(c_url[1]), repr(err)))
 			d+=1
 			
 		# now, let's write!
 		try:
+			logger.info("writing to final hosts file...")
 			# initialise to_write as empty list
 			to_write = []
 			
@@ -568,10 +642,14 @@ def main():
 				# total old hosts
 				old_hosts = read_old_hosts()
 				old_hosts_count = len(old_hosts)
-				print("* Old host definitions: %d hosts" % old_hosts_count)
+				msg = "* Old host definitions: %d hosts" % old_hosts_count
+				print(msg)
+				logger.debug(msg)
 			
 				new_host_count = len(tmp)
-				print("* New host definitions: %d hosts" % new_host_count)
+				msg = "* New host definitions: %d hosts" % new_host_count
+				print(msg)
+				logger.debug(msg)
 				
 				# determine how many hosts are missing.
 				# We're doing this no matter if old_hosts_count > new_host_count,
@@ -638,8 +716,9 @@ def main():
 			else:
 				print("* No changes. You're up to date!")
 
-		except Exception, e:
+		except Exception as e:
 			print("!! Failed to write hosts file: %s" % repr(e))
+			logger.error("Failed to write hosts file: %s" % repr(e))
 
 # define globals
 content = []
@@ -653,8 +732,10 @@ regenerate = False
 if __name__ == '__main__':
 	print("For command line arguments, start with -h or --help\n")
 	# parse args
+	logger.info("parsing cmd line arguments.")
 	args = parser.parse_args()
 	
+	logger.info("[args] clear cache: %s, dowload_hosts: %s, remove_target: %s, no_push: %s, no_commit: %s, force_regenerate: %s", args.clear_cache, args.download_hosts, args.remove, args.no_push, args.no_commit, args.force_generate)
 	# now, do stuff user wants
 	if args.clear_cache and not args.download_hosts:
 		print("* Clearing cache...")
