@@ -1,5 +1,7 @@
 # ignore cache
 cache/
+# ignore logs
+logs/
 # ignore credentials
 git_config.py
 git_config.pyc
