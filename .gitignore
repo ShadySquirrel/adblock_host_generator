@@ -1,5 +1,6 @@
-# ignore cache
+# ignore caches
 cache/
+__pycache__
 # ignore logs
 logs/
 # ignore credentials
