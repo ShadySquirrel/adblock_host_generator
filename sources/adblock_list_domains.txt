@@ -20,3 +20,4 @@ https://raw.githubusercontent.com/azet12/KADhosts/master/KADhosts.txt, KADHosts 
 https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts, Steven Black's ad-hoc list
 https://raw.githubusercontent.com/tyzbit/hosts/master/data/tyzbit/hosts, Microsoft Tracking hosts
 https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts, Unchecky Ads
+https://raw.githubusercontent.com/ZeroDot1/CoinBlockerLists/master/hosts, Coin miner blocking list
