@@ -22,4 +22,4 @@ https://raw.githubusercontent.com/tyzbit/hosts/master/data/tyzbit/hosts, Microso
 https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts, Unchecky Ads
 https://raw.githubusercontent.com/ZeroDot1/CoinBlockerLists/master/hosts, Coin miner blocking list
 https://adzhosts.fr/hosts/adzhosts-android.txt, AdzHostlist
-http://adblock.mahakala.is/, Mother of all AdBlocking
+
