@@ -1,20 +1,20 @@
 #!/usr/bin/python
 
 #  generate_adblock_urls.py
-#  
+#
 #  Copyright 2017 Shady Squirrel <shady.squirrel@caramail.com>
 #
-# Licenced under Apache License Version 2.0 
+# Licenced under Apache License Version 2.0
 
-import urllib
+import urllib.request
 import os
 import sys
 import time
 import sh
 import argparse
 import shutil
-#################### CONFIGURATION BLOCK #################### 
-''' 
+#################### CONFIGURATION BLOCK ####################
+'''
 Configuration values:
 
 - HOSTS_FILENAME: file with host providers URLs and descriptions
@@ -56,7 +56,7 @@ WHITELISTED_DOMAINS = [
 	# google block. google code not shown because it's dropped.
 	"google.com", "plus.google.com", "drive.google.com", "video.google.com", "apis.google.com", "docs.google.com", "keep.google.com", "play.google.com", "youtube.com", "imasdk.googleapis.com", "ajax.googleapis.com",
 	# facebook block. Possibly more to add but, who cares?
-	"facebook.com", 
+	"facebook.com",
 	# twitter block
 	"twitter.com", "platform.twitter.com", "api.twitter.com", "search.twitter.com",
 	# amazon block
@@ -68,7 +68,7 @@ WHITELISTED_DOMAINS = [
 	# microsoft
 	"microsoft.com",
 	# tumblr
-	"tumblr.com", "assets.tumblr.com", "platform.tumblr.com", "static.tumblr.com", 
+	"tumblr.com", "assets.tumblr.com", "platform.tumblr.com", "static.tumblr.com",
 	# imgur, reddit
 	"imgur.com", "reddit.com",
 	# github, gitlab
@@ -87,7 +87,7 @@ WHITELISTED_DOMAINS = [
 	"xda-developers.com",
 	 ]
 
-# Whitelisted domains. Same as WHITELISTED_DOMAINS, but to use with domains with too many subdomains 
+# Whitelisted domains. Same as WHITELISTED_DOMAINS, but to use with domains with too many subdomains
 # for example: cloudfront CDN uses too much subdomains it's nearly impossible to catch them all
 # Use [] list!
 WHITELISTED_WILDCARD_DOMAINS = [
@@ -96,7 +96,7 @@ WHITELISTED_WILDCARD_DOMAINS = [
 	# XDA developers. I have no idea which list blocked it.
 	"*.xda-developers.com",
 	]
-#################### CONFIGURATION BLOCK END #################### 
+#################### CONFIGURATION BLOCK END ####################
 
 #################### HERE BE LIONS ####################
 '''
@@ -124,7 +124,7 @@ from logging.config import dictConfig
 
 if not os.path.exists("logs/"):
 	os.mkdir("logs")
-	
+
 logger = logging.getLogger()
 log_name = "logs/debug_%s.log" % time.ctime()
 
@@ -140,7 +140,7 @@ logger.info("Starting host generation at %s..", time.ctime())
 
 '''
 update_progress() : Displays or updates a console progress bar
- 
+
 Accepts a float between 0 and 1. Any int will be converted to a float.
 - A value under 0 represents a 'halt'.
 - A value at 1 or bigger represents 100%
@@ -176,36 +176,36 @@ def check_age(file, max_age):
 	else:
 		logging.error("can't check age for non-existing file %s", file)
 		created = 0
-	
+
 	old_age = now - 60*60*24*max_age
-	
+
 	# guess that file is always newer than max_age, and return False.
 	state = False
-	
+
 	# now, do a check if file is really newer than max_age, and change state according to that.
 	if created < old_age:
 		state = True
-		
+
 	return state
 
 # parses sent string and returns value and state
 def parse_line(y):
 	# this defaults to true. runtime changes to false
 	write = True
-	
+
 	logger.info("parsing line %s" , y)
 	try: # chances for errors are slim, but better safe than sorry.
-		# some lists have specific rules beggining with ||, filter them out. 
+		# some lists have specific rules beggining with ||, filter them out.
 		if y.startswith("||"):
 			logger.debug("-> line requires spliting and filtering...")
 			# this should be done bit better?
-			y = y.strip("||") 
-			z1 = y.split("^") 
+			y = y.strip("||")
+			z1 = y.split("^")
 			z = z1[0]
 			# now split on backslashes, and use only first part of it
 			w = z.split("/", 1)
 			y = w[0].strip()
-		
+
 		# if rule begins with 0.0.0.0 or 127.0.0.1, split it.
 		domains_touple = ("0.0.0.0", "127.0.0.1")
 		if y.startswith(domains_touple):
@@ -217,42 +217,42 @@ def parse_line(y):
 				logger.debug("-> line contains a port, removing port")
 				w2 = y.split(":")
 				y = w2[0]
-			
+
 		# specifics cleaned, now do standard checks. First, check if host entry is valid
-		if y.startswith(ignore_tuple): 
+		if y.startswith(ignore_tuple):
 			write = False
 			logger.debug("-> it begins with an ignored symbol")
-		
-		# check if host is valid - if hosts contains any of symbols from list, ignore it. 
-		for sym in ignore_host_tuple: 
-			if sym in y: 
-				write = False 
+
+		# check if host is valid - if hosts contains any of symbols from list, ignore it.
+		for sym in ignore_host_tuple:
+			if sym in y:
+				write = False
 				logger.debug("-> it contains an ignored symbol '%s'" % sym)
-		
-		# check for file extensions. we're blocking domains, not specific files 
-		if y.endswith(ignore_extensions_touple): 
+
+		# check for file extensions. we're blocking domains, not specific files
+		if y.endswith(ignore_extensions_touple):
 			write = False
 			logger.debug("-> it ends with an extension")
-		
+
 		# check if host entry is ending in any of those ignored stuffs.
 		if y.endswith(ignore_tuple):
 			write = False
 			logger.debug("-> it ends with an ignored symbol")
-			
+
 		# check if host is in WHITELISTED_HOSTS:
 		if check_if_whitelisted(y):
 			write = False
 			logger.debug("-> it's whitelisted!")
-		
+
 		# all fine, return
 		if not write:
-			logger.debug("!!! %s is not valid line. Reasons above." % y)			
-	
+			logger.debug("!!! %s is not valid line. Reasons above." % y)
+
 	except Exception as exc:
 		err = "ERROR: parsing failed: %s" % str(exc)
 		logger.error(err)
 		write = False
-		
+
 	return (write, y)
 
 # reads old hosts file and returns a list of hosts
@@ -263,19 +263,19 @@ def read_old_hosts():
 	with open(TARGET_FILE, "r") as target:
 		lines = target.readlines()
 		target.close()
-		
+
 	for x in lines:
 		if not x.startswith("#"):
 			z = x.strip()
 			z1 = z.rstrip("\n")
 			z2 = z1.rstrip("\r")
-			
+
 			# check if host isn't in whitelist
 			whitelisted = check_if_whitelisted(z2)
-			
+
 			if not whitelisted:
 				old_hosts.append(z2)
-	
+
 	return old_hosts
 
 # checks if given host is in whitelist
@@ -286,14 +286,14 @@ def check_if_whitelisted(host):
 		h = sp[0]
 	else:
 		h = sp[1]
-		
+
 	whitelisted = False
-	
+
 	# check regular list
 	if h in WHITELISTED_DOMAINS:
 		logger.debug("%s is whitelisted in WHITELISTED_DOMAINS", h)
 		whitelisted = True
-	
+
 	# now check if wildcard is applied
 	import fnmatch
 	for wc in WHITELISTED_WILDCARD_DOMAINS:
@@ -302,9 +302,9 @@ def check_if_whitelisted(host):
 			logger.debug("%s is whitelisted (partial match) in WHITELISTED_WILDCARD_DOMAINS", h)
 		if not whitelisted and whitelisted != wl:
 			whitelisted = wl
-	
+
 	# return now.
-	return whitelisted	
+	return whitelisted
 
 # finds new hosts between two hostsets
 def find_new_hosts(old, new):
@@ -344,44 +344,44 @@ def push_to_git():
 	msg = "* Initialized git in %s" % os.getcwd()
 	print(msg)
 	logging.debug(msg)
-	
-	
+
+
 	# generate commit msg
 	commit_date = time.strftime("%d.%m.%Y")
 	commit_time = time.strftime("%H:%M:%S")
 	commit_msg = "HOSTS: %s update (at %s)" % (commit_date, commit_time)
 	print("* Generated commit message: %s" % commit_msg)
 	logging.debug("* Commit message: %s", commit_msg)
-	
+
 	# get remote url
 	print("* Generating git url")
 	remote = git.remote().strip()
 	remote_url = git.remote("get-url", remote, "--push")
 	logging.debug("* git push url: %s", remote_url)
-	
+
 	# we'll need this later.
 	url = remote_url
-	
+
 	# grab username and password from config
 	from git_config import git_config
-	
+
 	# if git is using https instead of ssh, generate push url.
 	if git_config["https"]:
-		print("* Using HTTPS. Generating push url...")						
+		print("* Using HTTPS. Generating push url...")
 		tmp = remote_url.split("//")
 		login_data = "%s:%s" % (git_config["username"], git_config["password"])
 		url = "%s//%s@%s" % (tmp[0].strip(), login_data, tmp[1].strip()) # no need for ':', it's left there from spliting.
-		
+
 		# add changes
 		git.add(TARGET_FILE)
 		print("* Adding changes..")
 		logger.debug("* adding changes to git commit")
-						
+
 		# commit changes
 		git.commit(m=commit_msg)
 		print("* Commiting changes...")
 		logger.debug("* commiting...")
-						
+
 		# push changes
 		if not no_push:
 			print("* Pushing changes...")
@@ -390,26 +390,26 @@ def push_to_git():
 		else:
 			print("* Commit created, to publish it, use 'git push' from your terminal")
 			logger.debug("* commit is created, but not pushed. push  manually please")
-						
-		print("* Done!")				
+
+		print("* Done!")
 
 # generates banner placed on top of generated hosts file
 def generate_banner():
 	import datetime
-	
+
 	(state, content) = parse_host_database()
-	
+
 	time_now = datetime.datetime.now()
-	
+
 	banner_string = "###########################################################################\n"
 	banner_string += "# Generated on %s\n" % time_now
 	banner_string += "# Contains hosts from:\n"
 
 	for url in content:
 		banner_string += "# %s (%s) \n" % (url[1], url[0])
-	
+
 	banner_string += "###########################################################################\n"
-	
+
 	return banner_string
 
 # database downloader
@@ -418,7 +418,7 @@ def download_database():
 	try:
 		# let's assume we don't have to download it
 		to_download = False
-			
+
 		# check for host database existence
 		if not os.path.isfile(HOSTS_FILENAME):
 			msg = "* Downloading host list base from %s" % HOSTS_URL
@@ -430,8 +430,8 @@ def download_database():
 			msg = "* Checking age of host list base"
 			logger.debug(msg)
 			print(msg)
-				
-			# now, check for database age. 
+
+			# now, check for database age.
 			# Possible scenario: I've changed something on Linux and uploaded,
 			#	but for some sick reason, I'm building file on windows...
 			if check_age(HOSTS_FILENAME, DATABASE_AGE):
@@ -442,15 +442,20 @@ def download_database():
 				to_download = True
 			else:
 				print("-> Host list base is still fresh enough")
-			
+
 		# to_download flag is true, well, download now. Only reason why I've put try-except here
 		if to_download:
 			print("* Started host base download.")
-			hosts_file = urllib.URLopener()
-			hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
-		
+			#hosts_file = urllib.URLopener()
+			#hosts_file.retrieve(HOSTS_URL, HOSTS_FILENAME)
+
+			h = urllib.request.urlopen(HOSTS_URL)
+			with open(HOSTS_FILENAME, 'w') as hf:
+				hf.write(h.read().decode("UTF-8"))
+				hf.close()
+
 		return True
-		
+
 	except Exception as err:
 		print("!! Host database download failed (%s)" % str(err))
 		logger.error("Host database download failed (%s)" % str(err))
@@ -464,7 +469,7 @@ def parse_host_database():
 	try:
 		with open(HOSTS_FILENAME) as f:
 			f_cont = f.readlines()
-			
+
 			f_size = len(f_cont)
 			f = 1.0
 
@@ -473,12 +478,12 @@ def parse_host_database():
 					zz = z.rstrip("\n").split(",")
 					zz[1] = zz[1].strip()
 					content.append(zz)
-				
+
 				f_perc = round(f/f_size, 2)
 				update_progress("Preparing host list base", f_perc)
-				
+
 				f+=1
-			
+
 			return (True, content)
 	except:
 		print("!! Error reading %s: %s" % (HOSTS_FILENAME, sys.exc_info()[0]))
@@ -490,13 +495,13 @@ def main():
 	# grab domain list file if online
 	if HOSTS_ONLINE:
 		dbStatus = download_database()
-		
+
 		if not dbStatus:
 			print("!! Failed to download hosts database. Abort")
 			logger.error("Failed to download hosts database. Aborting!")
 			sys.exit(1)
 	else:
-		# this is for good old analogue access - all files on drives, 
+		# this is for good old analogue access - all files on drives,
 		# and when something is missing? blame user.
 		if not os.path.isfile(HOSTS_FILENAME):
 			logger.error("%s doesn't exist. Aborting!", HOSTS_FILENAME)
@@ -504,10 +509,10 @@ def main():
 			sys.exit(1)
 		else:
 			print("* Hosts database found, resuming operation...")
-	
+
 	# haven't exited yet, parse hosts database, return state and base'
 	(source_file_exists, content) = parse_host_database()
-	
+
 	# store old hosts here. leave it uninitialized because it maybe won't be even used
 	old_hosts = []
 
@@ -524,35 +529,40 @@ def main():
 		# start reading  and downloading hosts
 		c = 1.0;
 		url_count = len(content)
-		
+
 		# inform user about everything
 		print("* Found %d lists in database." % url_count)
-		
+
 		# check if cache path exists.
 		if not os.path.isdir(CACHE_PATH):
 			print("*! Couldn't find cache directory, creating.")
 			os.mkdir(CACHE_PATH)
-		
+
 		# download host sources. This should probably be moved to a function.
 		dl_succ = False
 		for url in content:
 			try:
 				c_perc = c/url_count
 				update_progress("Downloading data from %s" % url[1], c_perc)
-				
+
 				path = "%s/%s" % (CACHE_PATH, url[1])
-				
+
 				if check_age(path, CACHE_AGE):
-					downloaded_file = urllib.URLopener()
-					downloaded_file.retrieve(str(url[0]), path)
-				
+					#downloaded_file = urllib.URLopener()
+					#downloaded_file.retrieve(str(url[0]), path)
+					with open(path, 'w') as cache_file:
+						d = urllib.request.urlopen(str(url[0])).read().decode("UTF-8")
+						cache_file.write(d)
+						cache_file.close()
+
+
 				c+=1
 				dl_succ = True
 			except Exception as e:
 				print("!! Failed to fetch data from %s: %s" % (url[1], repr(e)))
 				logger.error("Failed to fetch data from %s: %s" % (url[1], repr(e)))
 				# not sure if I should bail here or not?
-		
+
 		# yeah, we're bailing out like there is no tomorrow.
 		if dl_succ:
 			print("* Finished downloading data")
@@ -560,12 +570,12 @@ def main():
 			print("!! Couldn't download host sources, bailing out")
 			logger.error("Couldn't download host sources, bailing out")
 			sys.exit(0)
-		
+
 		# start merging source files and removing them after
 		d = 0
 		print("* Processing sources...")
 		logger.info("Started processing source files...")
-		
+
 		# this, ladies and gentleman, is our main container for hosts
 		# damn python, I can't remember how's this thing called. Touple? Array? Fuck it.
 		# we aren't initializing it with existing data in case ONLY_ADD_NEW is true simply because performance impact is, whoh, great.
@@ -579,13 +589,13 @@ def main():
 				# smart, eh?
 				c_url = content[d]
 				path = "%s/%s" % (CACHE_PATH, c_url[1])
-				
+
 				# open host source file and read it, determine it's size, strip it and parse it
 				with open(path) as source:
 					logger.debug("-> parsing contents of %s", path)
 					input_line = source.readlines()
 					s_size = len(input_line)
-					
+
 					# this is for progress bar.
 					j = 1.0
 
@@ -594,30 +604,30 @@ def main():
 						for y in input_line:
 							s_perc = j/s_size
 							update_progress("Parsing list: %s" % c_url[1].strip(), s_perc)
-							
+
 							# strip it naked before parsing.
 							w = y.strip()
 							w = w.strip("\n")
-							w = w.strip("\r")						
+							w = w.strip("\r")
 							y = w
-							
+
 							# line is useful to us only if it's longer than 0 chars
 							if len(y) > 0:
 								# parse, get response and value.
 								(write, y) = parse_line(y)
-								
+
 								# if response is right, write
-								if write:								
+								if write:
 									nline = None
-									
+
 									# we're dropping the IP part of host, if any.
 									w = y.split()
-									
+
 									if len(w) > 1:
 										nline = "127.0.0.1 %s" % w[1] # see why?
 									elif len(w) == 1:
 										nline = "127.0.0.1 %s" % w[0]
-											
+
 									# write only if nline is initialised
 									if nline != None:
 											hosts.append(nline)
@@ -628,27 +638,27 @@ def main():
 					except Exception as drnd:
 						print("!! Failed  processing entry %s: %s" % (str(y), repr(drnd)))
 						logger.error("Failed  processing entry %s: %s" % (str(y), repr(drnd)))
-								
+
 					# remove tmp file
 					if not USE_CACHE:
 						logger.debug("removing cached file...")
 						os.remove(path)
-				
+
 			except Exception as err:
 				print("!! Failed reading data from %s: %s" % (str(c_url[1]), repr(err)))
 				logger.error(" Failed reading data from %s: %s" % (str(c_url[1]), repr(err)))
 			d+=1
-			
+
 		# now, let's write!
 		try:
 			logger.info("writing to final hosts file...")
 			# initialise to_write as empty list
 			to_write = []
-			
+
 			# tmp will store our new host values until we decide what to do
 			# it also useset set(), because we need to drop duplicates. Sweet, eh?
 			tmp = set(hosts)
-			
+
 			# now, do a block for ONLY_ADD_NEW and only in case TARGET_FILE EXISTS!
 			if ONLY_ADD_NEW and os.path.exists(TARGET_FILE):
 				# total old hosts
@@ -657,26 +667,26 @@ def main():
 				msg = "* Old host definitions: %d hosts" % old_hosts_count
 				print(msg)
 				logger.debug(msg)
-			
+
 				new_host_count = len(tmp)
 				msg = "* New host definitions: %d hosts" % new_host_count
 				print(msg)
 				logger.debug(msg)
-				
+
 				# determine how many hosts are missing.
 				# We're doing this no matter if old_hosts_count > new_host_count,
 				# simply because we can have it 0, and still get new updates
-				missing_hosts = find_new_hosts(old_hosts, tmp)			
-				
+				missing_hosts = find_new_hosts(old_hosts, tmp)
+
 				# count 'em and show info
 				missing_hosts_c = len(missing_hosts)
-						
+
 				# inform user and extend current host list
 				if missing_hosts_c > 0:
 					print("* Added %d new domains." % missing_hosts_c)
 					old_hosts.extend(list(missing_hosts))
 					to_write = list(old_hosts)
-				
+
 				else:
 					if regenerate:
 						print("* No new hosts found. Still, regenerating file as requested...")
@@ -687,44 +697,44 @@ def main():
 			# because TARGET_FILE doesn't exist or ONLY_ADD_NEW isn't set, fail to default behaviour
 			else:
 				to_write = list(tmp)
-			
+
 			# finally, total number of hosts to write.
 			total_hosts = len(to_write)
-			
+
 			# count 'em
 			cnt = 1.0
-			
+
 			if total_hosts > 0:
 				# if ONLY_ADD_NEW flag is set, remove old file before writing, and do it silently.
 				if ONLY_ADD_NEW and os.path.exists(TARGET_FILE):
 					os.remove(TARGET_FILE)
-					
+
 				with open(TARGET_FILE, "w") as target:
 					# generates banner at the top of file. Contains info about hosts and creation date.
 					banner = generate_banner()
 					target.writelines(banner)
-								
+
 					# now write line by line. Can't be converted to oneliner :(
 					for h in to_write:
 						nl = "%s\n" % h
 						target.writelines(nl)
-						
+
 						# calulate percentage
 						s_perc = cnt/total_hosts
-						
+
 						# inform
 						update_progress("Writing hosts %d of %d" % (cnt, total_hosts), s_perc)
 						# ++
 						cnt+=1
-						
+
 					print("* Written %d hosts to %s" % (cnt, TARGET_FILE))
-					
+
 					target.close()
-					
+
 					# file written an saved, now it's time to push it to git
 					if AUTO_PUSH:
 						push_to_git()
-						
+
 			else:
 				print("* No changes. You're up to date!")
 
@@ -746,14 +756,14 @@ if __name__ == '__main__':
 	# parse args
 	logger.info("parsing cmd line arguments.")
 	args = parser.parse_args()
-	
+
 	logger.info("[args] clear cache: %s, dowload_hosts: %s, remove_target: %s, no_push: %s, no_commit: %s, force_regenerate: %s", args.clear_cache, args.download_hosts, args.remove, args.no_push, args.no_commit, args.force_generate)
 	# now, do stuff user wants
 	if args.clear_cache and not args.download_hosts:
 		print("* Clearing cache...")
 		if os.path.isdir(CACHE_PATH):
 			shutil.rmtree(CACHE_PATH)
-	
+
 	if args.remove:
 		print("* Removing TARGET_FILE")
 		if os.path.isfile(TARGET_FILE):
@@ -769,16 +779,16 @@ if __name__ == '__main__':
 	if args.no_push and AUTO_PUSH:
 		no_push = args.no_push
 		print("* Creating git commit but not pushing changes.")
-	
+
 	if args.no_commit and AUTO_PUSH:
 		AUTO_PUSH = False
 		print("* Disabled git repo update")
-	
+
 	if args.force_generate:
 		print("* Regenrating hosts file even if no changes available")
 		regenerate = args.force_generate
-		
+
 	# run main function
 	main()
-	
-#################### NO MORE LIONS :( #################### 
+
+#################### NO MORE LIONS :( ####################
